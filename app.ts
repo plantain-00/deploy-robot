@@ -20,7 +20,7 @@ function getSignature(body: string, application: settings.Application) {
 }
 
 function createComment(owner: string, repo: string, issueNumber: number, operater: string, next: (error: string) => void) {
-    let url = `https://github.com/repos/${owner}/${repo}/issues/${issueNumber}/comments`;
+    let url = `https://api.github.com/repos/${owner}/${repo}/issues/${issueNumber}/comments`;
     request({
         url: url,
         method: "post",
