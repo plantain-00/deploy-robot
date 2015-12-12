@@ -34,13 +34,13 @@ app.post("/", (request, response) => {
     }
 
     let user: string = request.body.comment.user.login;
-    if (!application.users.findIndex(value => value === user)) {
+    if (application.users.findIndex(value => value === user) < 0) {
         response.send("not valid operater");
         return;
     }
 
     let comment: string = request.body.comment.body;
-    if (comment.indexOf("robot, deploy please.")) {
+    if (comment.indexOf("robot, deploy please.") >= 0) {
         childProcess.exec(application.command, (error, stdout, stderr) => {
             if (error) {
                 response.send(JSON.stringify(error));
