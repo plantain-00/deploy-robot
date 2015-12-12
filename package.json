@@ -1,6 +1,6 @@
 {
     "name": "deploy-robot",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "a deploy robot fired by comment",
     "main": "app.js",
     "scripts": {

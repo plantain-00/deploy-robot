@@ -19,9 +19,10 @@ function getSignature(body: string, application: settings.Application) {
     return "sha1=" + cryptoJs.HmacSHA1(body, application.secret).toString();
 }
 
-function createComment(owner: string, repo: string, issueNumber: number, operater: string, next: (error: Error) => void) {
+function createComment(owner: string, repo: string, issueNumber: number, operater: string, next: (error: string) => void) {
+    let url = `https://github.com/repos/${owner}/${repo}/issues/${issueNumber}/comments`;
     request({
-        url: `https://github.com/repos/${owner}/${repo}/issues/${issueNumber}/comments`,
+        url: url,
         method: "post",
         json: true,
         body: {
@@ -32,7 +33,17 @@ function createComment(owner: string, repo: string, issueNumber: number, operate
             "User-Agent": "SubsNoti-robot",
         },
     }, (error, incomingMessage, body) => {
-        next(error);
+        if (error) {
+            next(error.message);
+            return;
+        }
+
+        if (incomingMessage.statusCode !== 201) {
+            next(`url(${url})` + body);
+            return;
+        }
+
+        next(null);
     });
 }
 
@@ -71,7 +82,7 @@ app.post("/", (request, response) => {
             let issueNumber = request.body.issue.number;
             createComment(owner, repositoryName, issueNumber, operater, err => {
                 if (err) {
-                    response.send(JSON.stringify(err));
+                    response.send(err);
                     return;
                 }
 
