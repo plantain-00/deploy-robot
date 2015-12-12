@@ -19,6 +19,12 @@
     },
     "crypto-js/crypto-js.d.ts": {
       "commit": "5a8fc5ee71701431e4fdbb80c506e3c13f85a9ff"
+    },
+    "form-data/form-data.d.ts": {
+      "commit": "5a8fc5ee71701431e4fdbb80c506e3c13f85a9ff"
+    },
+    "request/request.d.ts": {
+      "commit": "5a8fc5ee71701431e4fdbb80c506e3c13f85a9ff"
     }
   }
 }

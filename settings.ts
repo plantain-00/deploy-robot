@@ -9,6 +9,8 @@ export interface Application {
 
 export let applications: Application[] = [];
 
+export let accessToken: string;
+
 try {
     let secret = require("./secret");
     secret.load();
