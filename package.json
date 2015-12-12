@@ -1,0 +1,28 @@
+{
+    "name": "deploy-robot",
+    "version": "1.0.0",
+    "description": "a deploy robot fired by comment",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/plantain-00/deploy-robot.git"
+    },
+    "author": "yao",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/plantain-00/deploy-robot/issues"
+    },
+    "homepage": "https://github.com/plantain-00/deploy-robot#readme",
+    "dependencies": {
+        "body-parser": "latest",
+        "crypto-js": "latest",
+        "express": "latest"
+    },
+    "devDependencies": {
+        "gulp": "latest",
+        "gulp-shell": "latest"
+    }
+}
