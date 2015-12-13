@@ -19,80 +19,92 @@ function getSignature(body: string, application: settings.Application) {
     return "sha1=" + cryptoJs.HmacSHA1(body, application.secret).toString();
 }
 
-function createComment(owner: string, repo: string, issueNumber: number, operater: string, next: (error: string) => void) {
+function createComment(content: string, owner: string, repo: string, issueNumber: number, operater: string) {
     let url = `https://api.github.com/repos/${owner}/${repo}/issues/${issueNumber}/comments`;
-    request({
-        url: url,
-        method: "post",
-        json: true,
-        body: {
-            body: `@${operater}, it's done now.`
-        },
-        headers: {
-            Authorization: `token ${settings.accessToken}`,
-            "User-Agent": "SubsNoti-robot",
-        },
-    }, (error, incomingMessage, body) => {
-        if (error) {
-            next(error.message);
-            return;
-        }
-
-        if (incomingMessage.statusCode !== 201) {
-            next(`url(${url})` + body);
-            return;
-        }
-
-        next(null);
-    });
-}
-
-app.post("/", (request, response) => {
-    let repositoryName = request.body.repository.name;
-    let application = settings.applications.find((value, index, obj) => value.repositoryName === repositoryName);
-    if (!application) {
-        response.send("name of repository is not found");
-        return;
-    }
-
-    let remoteSignature: string = request.header("X-Hub-Signature");
-    let signature = getSignature(JSON.stringify(request.body), application);
-    if (signature !== remoteSignature) {
-        response.send("signatures don't match");
-        return;
-    }
-
-    let operater: string = request.body.comment.user.login;
-    if (application.users.findIndex(value => value === operater) < 0) {
-        response.send("not valid operater");
-        return;
-    }
-
-    let comment: string = request.body.comment.body;
-    if (comment.indexOf("robot") >= 0
-        && comment.indexOf("deploy") >= 0
-        && comment.indexOf("please") >= 0) {
-        childProcess.exec(application.command, (error, stdout, stderr) => {
+    return new Promise<void>((resolve, reject) => {
+        request({
+            url: url,
+            method: "post",
+            json: true,
+            body: {
+                body: content
+            },
+            headers: {
+                Authorization: `token ${settings.accessToken}`,
+                "User-Agent": "SubsNoti-robot",
+            },
+        }, (error, incomingMessage, body) => {
             if (error) {
-                response.send(JSON.stringify(error));
+                reject(error);
                 return;
             }
 
+            if (incomingMessage.statusCode !== 201) {
+                reject(body);
+                return;
+            }
+
+            resolve();
+        });
+    });
+}
+
+function exec(command: string) {
+    return new Promise<void>((resolve, reject) => {
+        childProcess.exec(command, (error, stdout, stderr) => {
+            if (error) {
+                reject(error);
+                return;
+            }
+
+            resolve();
+        });
+    });
+}
+
+app.post("/", async (request, response) => {
+    try {
+        let repositoryName = request.body.repository.name;
+        let application = settings.applications.find((value, index, obj) => value.repositoryName === repositoryName);
+        if (!application) {
+            response.send("name of repository is not found");
+            return;
+        }
+
+        let remoteSignature: string = request.header("X-Hub-Signature");
+        let signature = getSignature(JSON.stringify(request.body), application);
+        if (signature !== remoteSignature) {
+            response.send("signatures don't match");
+            return;
+        }
+
+        let operater: string = request.body.comment.user.login;
+        if (application.operators.findIndex(value => value === operater) < 0) {
+            response.send("not valid operater");
+            return;
+        }
+
+        let comment: string = request.body.comment.body;
+        if (comment.indexOf("robot") >= 0
+            && comment.indexOf("deploy") >= 0
+            && comment.indexOf("please") >= 0) {
             let owner = request.body.repository.owner.login;
             let issueNumber = request.body.issue.number;
-            createComment(owner, repositoryName, issueNumber, operater, err => {
-                if (err) {
-                    response.send(err);
-                    return;
-                }
+            await createComment(`@${operater}, it may take a few minutes to finish it.`, owner, repositoryName, issueNumber, operater);
+            try {
+                await exec(application.command);
+                await createComment(`@${operater}, it's done now.`, owner, repositoryName, issueNumber, operater);
+            } catch (error) {
+                await createComment(`@${operater}, ${error}.`, owner, repositoryName, issueNumber, operater);
+            }
+            response.send("success");
+            return;
+        }
 
-                response.send("success");
-            });
-        });
-        return;
+        response.send("not a command");
+    } catch (error) {
+        response.send(error);
     }
-
-    response.send("not a command");
 });
 
 let port = 9996;

@@ -3,7 +3,7 @@
 export interface Application {
     repositoryName: string;
     secret: string;
-    users: string[];
+    operators: string[];
     command: string;
 }
 
