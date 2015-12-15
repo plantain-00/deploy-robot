@@ -1,6 +1,6 @@
 {
     "name": "deploy-robot",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "description": "a deploy robot fired by comment",
     "main": "app.js",
     "scripts": {
@@ -17,13 +17,13 @@
     },
     "homepage": "https://github.com/plantain-00/deploy-robot#readme",
     "dependencies": {
-        "body-parser": "latest",
-        "crypto-js": "latest",
-        "express": "latest",
-        "request": "latest"
+        "body-parser": "^1.14.1",
+        "crypto-js": "^3.1.5",
+        "express": "^4.13.3",
+        "request": "^2.67.0"
     },
     "devDependencies": {
-        "gulp": "latest",
-        "gulp-shell": "latest"
+        "gulp": "^3.9.0",
+        "gulp-shell": "^0.5.1"
     }
 }
