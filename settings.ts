@@ -1,5 +1,3 @@
-"use strict";
-
 export interface Application {
     repositoryName: string;
     secret: string;

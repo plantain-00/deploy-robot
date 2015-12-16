@@ -1,7 +1,5 @@
 /// <reference path="./typings/tsd.d.ts" />
 
-"use strict";
-
 import * as express from "express";
 import * as cryptoJs from "crypto-js";
 import * as childProcess from "child_process";
@@ -78,8 +76,8 @@ app.post("/", async (request, response) => {
             return;
         }
 
-        let operater: string = request.body.comment.user.login;
-        if (application.operators.findIndex(value => value === operater) < 0) {
+        let operator: string = request.body.comment.user.login;
+        if (application.operators.findIndex(value => value === operator) < 0) {
             response.end("not valid operater");
             return;
         }
@@ -91,13 +89,13 @@ app.post("/", async (request, response) => {
             let owner = request.body.repository.owner.login;
             let issueNumber = request.body.issue.number;
             response.end("command accepted");
-            await createComment(`@${operater}, it may take a few minutes to finish it.`, owner, repositoryName, issueNumber, operater);
+            await createComment(`@${operator}, it may take a few minutes to finish it.`, owner, repositoryName, issueNumber, operator);
             try {
                 await exec(application.command);
-                await createComment(`@${operater}, it's done now.`, owner, repositoryName, issueNumber, operater);
+                await createComment(`@${operator}, it's done now.`, owner, repositoryName, issueNumber, operator);
             } catch (error) {
                 console.log(error);
-                await createComment(`@${operater}, ${error}.`, owner, repositoryName, issueNumber, operater);
+                await createComment(`@${operator}, ${error}.`, owner, repositoryName, issueNumber, operator);
             }
             return;
         }
