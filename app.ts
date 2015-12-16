@@ -67,20 +67,20 @@ app.post("/", async (request, response) => {
         let repositoryName = request.body.repository.name;
         let application = settings.applications.find((value, index, obj) => value.repositoryName === repositoryName);
         if (!application) {
-            response.send("name of repository is not found");
+            response.end("name of repository is not found");
             return;
         }
 
         let remoteSignature: string = request.header("X-Hub-Signature");
         let signature = getSignature(JSON.stringify(request.body), application);
         if (signature !== remoteSignature) {
-            response.send("signatures don't match");
+            response.end("signatures don't match");
             return;
         }
 
         let operater: string = request.body.comment.user.login;
         if (application.operators.findIndex(value => value === operater) < 0) {
-            response.send("not valid operater");
+            response.end("not valid operater");
             return;
         }
 
@@ -90,20 +90,22 @@ app.post("/", async (request, response) => {
             && comment.indexOf("please") >= 0) {
             let owner = request.body.repository.owner.login;
             let issueNumber = request.body.issue.number;
+            response.end("command accepted");
             await createComment(`@${operater}, it may take a few minutes to finish it.`, owner, repositoryName, issueNumber, operater);
             try {
                 await exec(application.command);
                 await createComment(`@${operater}, it's done now.`, owner, repositoryName, issueNumber, operater);
             } catch (error) {
+                console.log(error);
                 await createComment(`@${operater}, ${error}.`, owner, repositoryName, issueNumber, operater);
             }
-            response.send("success");
             return;
         }
 
-        response.send("not a command");
+        response.end("not a command");
     } catch (error) {
-        response.send(error);
+        console.log(error);
+        response.end(error);
     }
 });
 
