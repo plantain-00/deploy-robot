@@ -20,3 +20,22 @@
 
 + `gulp deploy`
 + `pm2 restart all`
+
+# secure
+
+create a file of `secret.ts`, like:
+
+```typescript
+import * as settings from "./settings";
+
+export function load() {
+    settings.applications.push({
+        repositoryName: "",
+        secret: "",
+        operators: [""],
+        command: "",
+    });
+
+    settings.accessToken = "";
+}
+```
