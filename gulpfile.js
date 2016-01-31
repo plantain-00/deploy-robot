@@ -1,7 +1,7 @@
 "use strict";
 
-let gulp = require("gulp");
-let shell = require("gulp-shell");
+const gulp = require("gulp");
+const shell = require("gulp-shell");
 
 gulp.task("build", shell.task("tsc --pretty"));
 

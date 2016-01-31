@@ -5,12 +5,12 @@ export interface Application {
     command: string;
 }
 
-export let applications: Application[] = [];
+export const applications: Application[] = [];
 
 export let accessToken: string;
 
 try {
-    let secret = require("./secret");
+    const secret = require("./secret");
     secret.load();
 } catch (e) {
     console.log(e);

@@ -4,12 +4,12 @@ import * as express from "express";
 import * as cryptoJs from "crypto-js";
 import * as childProcess from "child_process";
 import * as request from "request";
-let bodyParser = require("body-parser");
+const bodyParser = require("body-parser");
 import * as _ from "lodash";
 
 import * as settings from "./settings";
 
-let app = express();
+const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -27,7 +27,7 @@ interface Command {
 }
 
 function createComment(content: string, command: Command) {
-    let url = `https://api.github.com/repos/${command.owner}/${command.repo}/issues/${command.issueNumber}/comments`;
+    const url = `https://api.github.com/repos/${command.owner}/${command.repo}/issues/${command.issueNumber}/comments`;
     return new Promise<void>((resolve, reject) => {
         request({
             url: url,
@@ -74,27 +74,27 @@ let isExecuting = false;
 
 app.post("/", async (request, response) => {
     try {
-        let repositoryName = request.body.repository.name;
-        let application = settings.applications.find((value, index, obj) => value.repositoryName === repositoryName);
+        const repositoryName = request.body.repository.name;
+        const application = settings.applications.find((value, index, obj) => value.repositoryName === repositoryName);
         if (!application) {
             response.end("name of repository is not found");
             return;
         }
 
-        let remoteSignature: string = request.header("X-Hub-Signature");
-        let signature = getSignature(JSON.stringify(request.body), application);
+        const remoteSignature: string = request.header("X-Hub-Signature");
+        const signature = getSignature(JSON.stringify(request.body), application);
         if (signature !== remoteSignature) {
             response.end("signatures don't match");
             return;
         }
 
-        let operator: string = request.body.comment.user.login;
+        const operator: string = request.body.comment.user.login;
         if (application.operators.findIndex(value => value === operator) < 0) {
             response.end("not valid operater");
             return;
         }
 
-        let comment: string = request.body.comment.body;
+        const comment: string = request.body.comment.body;
         if (comment.indexOf("robot") >= 0
             && comment.indexOf("deploy") >= 0
             && comment.indexOf("please") >= 0) {
@@ -114,11 +114,11 @@ app.post("/", async (request, response) => {
                 isExecuting = true;
                 while (commands.length > 0) {
                     console.log(`there are ${commands.length} commands.`)
-                    let command = commands[0];
+                    const command = commands[0];
                     try {
                         await exec(command.content);
-                        let newCommands: Command[] = [];
-                        for (let c of commands) {
+                        const newCommands: Command[] = [];
+                        for (const c of commands) {
                             if (c.content === command.content) {
                                 await createComment(`@${c.operator}, it's done now.`, c);
                             } else {
@@ -144,7 +144,7 @@ app.post("/", async (request, response) => {
     }
 });
 
-let port = 9996;
+const port = 9996;
 
 app.listen(port, "localhost", () => {
     console.log(`deploy robot is listening: ${port}`);
