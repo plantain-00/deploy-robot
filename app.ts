@@ -140,7 +140,7 @@ app.post("/", async (request, response) => {
         response.end("not a command");
     } catch (error) {
         console.log(error);
-        response.end(error);
+        response.end(error.toString());
     }
 });
 
