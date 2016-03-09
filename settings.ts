@@ -7,7 +7,13 @@ export interface Application {
 
 export const applications: Application[] = [];
 
+// github:
 export let accessToken: string;
+
+// gitlab:
+export let privateToken: string;
+
+export let type: "github" | "gitlab" = "github";
 
 try {
     const secret = require("./secret");

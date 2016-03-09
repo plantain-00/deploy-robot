@@ -7,3 +7,4 @@
 /// <reference path="form-data/form-data.d.ts" />
 /// <reference path="request/request.d.ts" />
 /// <reference path="lodash/lodash.d.ts" />
+/// <reference path="body-parser/body-parser.d.ts" />
