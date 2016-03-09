@@ -5,7 +5,7 @@
 # tools and global npm packages
 
 + node.js >=4.0(for ES6 support)
-+ typescript@next(for ES6 and ES7 async function support)
++ typescript(for ES6 and ES7 async function support)
 + gulp
 + node-gyp build environment
 + pm2
@@ -20,6 +20,11 @@
 
 + `gulp deploy`
 + `pm2 restart all`
+
+# In Github, Gitlab
+
+1. Add a web hook for the repository, the trigger events should include comments of pull/merge request
+2. Create a robot account, and create a private access token for the account
 
 # secure
 

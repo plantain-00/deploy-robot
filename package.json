@@ -1,30 +1,33 @@
 {
-    "name": "deploy-robot",
-    "version": "1.1.2",
-    "description": "a deploy robot fired by comment",
-    "main": "app.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/plantain-00/deploy-robot.git"
-    },
-    "author": "yao",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/plantain-00/deploy-robot/issues"
-    },
-    "homepage": "https://github.com/plantain-00/deploy-robot#readme",
-    "dependencies": {
-        "body-parser": "^1.14.1",
-        "crypto-js": "^3.1.5",
-        "express": "^4.13.3",
-        "lodash": "^4.0.0",
-        "request": "^2.67.0"
-    },
-    "devDependencies": {
-        "gulp": "^3.9.0",
-        "gulp-shell": "^0.5.1"
-    }
+  "name": "deploy-robot",
+  "version": "1.2.0",
+  "description": "a deploy robot fired by comment",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plantain-00/deploy-robot.git"
+  },
+  "author": "yao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/plantain-00/deploy-robot/issues"
+  },
+  "homepage": "https://github.com/plantain-00/deploy-robot#readme",
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "crypto-js": "^3.1.5",
+    "express": "^4.13.3",
+    "lodash": "^4.0.0",
+    "request": "^2.67.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-shell": "^0.5.1",
+    "gulp-tslint": "^4.3.3",
+    "tslint": "^3.5.0",
+    "typescript": "^1.8.7"
+  }
 }
