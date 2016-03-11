@@ -1,7 +1,10 @@
+/**
+ * operators: for github, it's name; for gitlab, it's id, can be found in the html
+ */
 export interface Application {
     repositoryName: string;
     secret: string;
-    operators: string[];
+    operators: (string | number)[];
     command: string;
 }
 
