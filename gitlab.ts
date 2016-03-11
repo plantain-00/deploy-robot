@@ -42,8 +42,17 @@ export async function handle(request: libs.express.Request, response: libs.expre
         return;
     }
 
-    // todo: validate signature?
-    // todo: validate operator?
+    const token = request.query.token;
+    if (token !== application.secret) {
+        response.end("token don't match");
+        return;
+    }
+
+    const operator: string = request.body.object_attributes.author_id;
+    if (application.operators.findIndex(value => value === operator) < 0) {
+        response.end("not valid operator");
+        return;
+    }
 
     const comment: string = request.body.comment.body;
 

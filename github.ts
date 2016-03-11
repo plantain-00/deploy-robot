@@ -2,8 +2,8 @@ import * as libs from "./libs";
 import * as settings from "./settings";
 import * as deploy from "./deploy";
 
-function getSignature(body: string, application: settings.Application) {
-    return "sha1=" + libs.cryptoJs.HmacSHA1(body, application.secret).toString();
+function getSignature(body: string, secret: string) {
+    return "sha1=" + libs.cryptoJs.HmacSHA1(body, secret).toString();
 }
 
 interface Context {
@@ -48,7 +48,7 @@ export async function handle(request: libs.express.Request, response: libs.expre
     }
 
     const remoteSignature: string = request.header("X-Hub-Signature");
-    const signature = getSignature(JSON.stringify(request.body), application);
+    const signature = getSignature(JSON.stringify(request.body), application.secret);
     if (signature !== remoteSignature) {
         response.end("signatures don't match");
         return;

@@ -25,6 +25,11 @@
 
 1. Add a web hook for the repository, the trigger events should include comments of pull/merge request
 2. Create a robot account, and create a private access token for the account
+3. For gitlab, the push url should have a parameter of `token` as the secret string. looks like `?token=xxxxxxxxxx`
+
+# Why no bitbucket?
+
+Can not set private access token, and can not create comment, for now.
 
 # secure
 
