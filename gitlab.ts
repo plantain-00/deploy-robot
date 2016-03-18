@@ -48,13 +48,13 @@ export async function handle(request: libs.express.Request, response: libs.expre
         return;
     }
 
-    const operator: string = request.body.object_attributes.author_id;
+    const operator: number = request.body.object_attributes.author_id;
     if (application.operators.findIndex(value => value === operator) < 0) {
         response.end("not valid operator");
         return;
     }
 
-    const comment: string = request.body.comment.body;
+    const comment: string = request.body.object_attributes.note;
 
     if (deploy.isThis(comment)) {
         response.end("command accepted");
