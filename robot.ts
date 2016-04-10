@@ -26,5 +26,5 @@ app.post("/", async (request, response) => {
 const port = 9996;
 
 app.listen(port, "localhost", () => {
-    console.log(`deploy robot is listening: ${port}`);
+    console.log(`deploy robot is listening: ${port} in mode: ${settings.type}`);
 });
