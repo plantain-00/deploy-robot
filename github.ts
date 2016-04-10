@@ -60,7 +60,7 @@ export async function handle(request: libs.express.Request, response: libs.expre
         return;
     }
 
-    const comment: string = request.body.object_attributes.note;
+    const comment: string = request.body.comment.body;
 
     if (deploy.isThis(comment)) {
         response.end("command accepted");
