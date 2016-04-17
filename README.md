@@ -33,19 +33,4 @@ Can not set private access token, and can not create comment, for now.
 
 # secure
 
-create a file of `secret.ts`, like:
-
-```typescript
-const settings = require("./settings");
-
-export function load() {
-    settings.applications.push({
-        repositoryName: "",
-        secret: "",
-        operators: [""],
-        command: "",
-    });
-
-    settings.accessToken = "";
-}
-```
+for GIthub, create an environment variable named `DEPLOY_ROBOT_ACCESS_TOKEN`, for Gitlab, create an environment variable named `DEPLOY_ROBOT_PRIVATE_TOKEN`.

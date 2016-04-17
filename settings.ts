@@ -11,16 +11,9 @@ export interface Application {
 export const applications: Application[] = [];
 
 // github:
-export let accessToken: string;
+export let accessToken: string = process.env.DEPLOY_ROBOT_ACCESS_TOKEN;
 
 // gitlab:
-export let privateToken: string;
+export let privateToken: string = process.env.DEPLOY_ROBOT_PRIVATE_TOKEN;
 
 export let type: "github" | "gitlab" = "github";
-
-try {
-    const secret = require("./secret");
-    secret.load();
-} catch (e) {
-    console.log(e);
-}
