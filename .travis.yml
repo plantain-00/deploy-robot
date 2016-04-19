@@ -2,8 +2,8 @@ language: node_js
 node_js:
   - "4.1"
 before_script:
-  - npm install -g gulp
-  - npm install -g typescript@next
+  - npm install -g gulp typescript tsd
+  - tsd install
 script:
   - gulp build
 env:

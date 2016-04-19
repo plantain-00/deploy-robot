@@ -28,3 +28,5 @@ node_modules
 
 **/*.js
 !gulpfile.js
+typings
+.vscode

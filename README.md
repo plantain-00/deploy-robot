@@ -9,10 +9,12 @@
 + gulp
 + node-gyp build environment
 + pm2
++ tsd
 
 # development
 
 + `npm install`
++ `tsd install`
 + `gulp build`
 + `gulp host`
 
