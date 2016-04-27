@@ -4,7 +4,6 @@
 
 # tools and global npm packages
 
-+ node.js >=4.0(for ES6 support)
 + typescript(for ES6 and ES7 async function support)
 + gulp
 + node-gyp build environment

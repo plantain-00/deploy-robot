@@ -26,9 +26,6 @@
     "request/request.d.ts": {
       "commit": "3a86e056dc018541d82dd74639fca18ba8d605da"
     },
-    "lodash/lodash.d.ts": {
-      "commit": "fe563dff3428bac1260d1794e2c2ecf8f097535a"
-    },
     "body-parser/body-parser.d.ts": {
       "commit": "9f0f926a12026287b5a4a229e5672c01e7549313"
     }

@@ -14,9 +14,6 @@ export {request};
 import * as bodyParser from "body-parser";
 export {bodyParser};
 
-import * as _ from "lodash";
-export {_};
-
 export function exec(command: string) {
     return new Promise<void>((resolve, reject) => {
         childProcess.exec(command, (error, stdout, stderr) => {
