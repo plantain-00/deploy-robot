@@ -4,23 +4,15 @@
 
 # tools and global npm packages
 
-+ typescript(for ES6 and ES7 async function support)
-+ gulp
++ `npm i -g typescript tsd pm2 tslint check-npm`
 + node-gyp build environment
-+ pm2
-+ tsd
 
 # development
 
-+ `npm install`
++ `npm i`
 + `tsd install`
-+ `gulp build`
-+ `gulp host`
-
-# production
-
-+ `gulp deploy`
-+ `pm2 restart all`
++ `tsc && npm run tslint`
++ `node robot.js`
 
 # In Github, Gitlab
 
