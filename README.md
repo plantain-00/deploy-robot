@@ -4,14 +4,14 @@
 
 # tools and global npm packages
 
-+ `npm i -g typescript tsd pm2 tslint check-npm`
++ `npm run init`
 + node-gyp build environment
 
 # development
 
-+ `npm i`
-+ `tsd install`
-+ `tsc && npm run tslint`
++ `npm run restore`
++ `tsc`
++ `npm run tslint`
 + `node robot.js`
 
 # In Github, Gitlab
