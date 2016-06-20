@@ -70,7 +70,7 @@ export async function handle(request: libs.express.Request, response: libs.expre
                 owner: request.body.repository.owner.login,
                 repo: repositoryName,
                 issueNumber: request.body.issue.number,
-                operator: operator,
+                operator,
             },
         };
         await deploy.handle<Context>(comment, command, createComment);
