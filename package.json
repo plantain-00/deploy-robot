@@ -5,7 +5,7 @@
   "main": "robot.js",
   "scripts": {
     "tslint": "tslint '*.ts'",
-    "init": "npm i -g typescript tslint npm-check"
+    "init": "npm i -g typescript@beta tslint npm-check"
   },
   "repository": {
     "type": "git",
