@@ -5,7 +5,7 @@ interface Command<T> {
     command: string;
 }
 
-let commands = [];
+let commands: Command<any>[] = [];
 
 /**
  * commands should be excuted one by one in a process globally.
@@ -30,7 +30,7 @@ export async function handle<T>(comment: string, command: Command<T>, createComm
             const firstCommand = commands[0];
             try {
                 await libs.exec(firstCommand.command);
-                const newCommands = [];
+                const newCommands: Command<T>[] = [];
                 for (const c of commands) {
                     if (c.command === firstCommand.command) {
                         await createComment("it's done now.", c.context);

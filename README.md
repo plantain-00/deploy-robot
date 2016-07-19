@@ -9,7 +9,7 @@
 
 # development
 
-+ `npm run restore`
++ `npm i`
 + `tsc`
 + `npm run tslint`
 + `node robot.js`

@@ -29,3 +29,4 @@ node_modules
 **/*.js
 typings
 .vscode
+*.js.map

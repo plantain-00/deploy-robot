@@ -5,8 +5,7 @@
   "main": "robot.js",
   "scripts": {
     "tslint": "tslint '*.ts'",
-    "init": "npm i -g typescript tsd tslint npm-check",
-    "restore": "tsd install && npm i"
+    "init": "npm i -g typescript tslint npm-check"
   },
   "repository": {
     "type": "git",
@@ -26,5 +25,12 @@
   },
   "engines": {
     "node": ">=6.0.0"
+  },
+  "devDependencies": {
+    "@types/body-parser": "0.0.29",
+    "@types/crypto-js": "^3.1.28",
+    "@types/express": "^4.0.29",
+    "@types/request": "0.0.27",
+    "typescript": "^2.0.0"
   }
 }

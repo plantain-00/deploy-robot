@@ -3,7 +3,7 @@ node_js:
   - "6.0"
 before_script:
   - npm run init
-  - npm run restore
+  - npm i
 script:
   - tsc
   - npm run tslint
