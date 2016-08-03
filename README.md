@@ -2,15 +2,14 @@
 [![devDependency Status](https://david-dm.org/plantain-00/deploy-robot/dev-status.svg)](https://david-dm.org/plantain-00/deploy-robot#info=devDependencies)
 [![Build Status](https://travis-ci.org/plantain-00/deploy-robot.svg?branch=master)](https://travis-ci.org/plantain-00/deploy-robot)
 
-# tools and global npm packages
+# tools
 
-+ `npm run init`
 + node-gyp build environment
 
 # development
 
 + `npm i`
-+ `tsc`
++ `npm run build`
 + `npm run tslint`
 + `node robot.js`
 

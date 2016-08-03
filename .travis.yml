@@ -2,10 +2,9 @@ language: node_js
 node_js:
   - "6.0"
 before_script:
-  - npm run init
   - npm i
 script:
-  - tsc
+  - npm run build
   - npm run tslint
 env:
   - CXX=g++-4.8
