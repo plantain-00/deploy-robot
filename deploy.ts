@@ -12,7 +12,7 @@ let commands: Command<any>[] = [];
  */
 let isExecuting = false;
 
-export function isThis(comment: string) {
+export function isDeployCommand(comment: string) {
     return comment.indexOf("robot") >= 0
         && comment.indexOf("deploy") >= 0
         && comment.indexOf("please") >= 0;

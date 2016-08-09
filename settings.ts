@@ -5,7 +5,7 @@ export interface Application {
     repositoryName: string;
     secret: string;
     operators: (string | number)[];
-    command: string;
+    deployCommand: string;
 }
 
 export const applications: Application[] = [];

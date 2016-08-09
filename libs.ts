@@ -1,16 +1,16 @@
 import * as express from "express";
-export {express};
+export { express };
 
 import * as cryptoJs from "crypto-js";
-export {cryptoJs};
+export { cryptoJs };
 
 import * as childProcess from "child_process";
 
 import * as request from "request";
-export {request};
+export { request };
 
 import * as bodyParser from "body-parser";
-export {bodyParser};
+export { bodyParser };
 
 export function exec(command: string) {
     return new Promise<void>((resolve, reject) => {
@@ -23,3 +23,8 @@ export function exec(command: string) {
         });
     });
 }
+
+const getPort: () => Promise<number> = require("get-port");
+getPort().then(port => {
+    console.log(port);
+});

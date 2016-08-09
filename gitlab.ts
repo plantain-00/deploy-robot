@@ -34,39 +34,70 @@ function createComment(content: string, context: Context) {
     });
 }
 
-export async function handle(request: libs.express.Request, response: libs.express.Response) {
-    const repositoryName = request.body.repository.name;
-    const application = settings.applications.find((value, index, obj) => value.repositoryName === repositoryName);
-    if (!application) {
-        response.end("name of repository is not found");
-        return;
-    }
+export function getRepositoryName(request: libs.express.Request): string {
+    return request.body.repository.name;
+}
 
-    const token = request.query.token;
-    if (token !== application.secret) {
-        response.end("token don't match");
-        return;
-    }
+export function verifySignature(request: libs.express.Request, application: settings.Application) {
+    const token = request.header("X-Gitlab-Token");
+    return token === application.secret;
+}
 
-    const operator: number = request.body.object_attributes.author_id;
-    if (application.operators.findIndex(value => value === operator) < 0) {
-        response.end("not valid operator");
-        return;
-    }
+export function getEventName(request: libs.express.Request) {
+    return request.header("X-Gitlab-Event");
+}
 
-    const comment: string = request.body.object_attributes.note;
+export const issueCommentEventName = "Note Hook";
+export const pullRequestEventName = "Merge Request Hook";
 
-    if (deploy.isThis(comment)) {
-        response.end("command accepted");
-        const command = {
-            command: application.command,
-            context: {
-                projectId: request.body.project_id,
-                mergeRequestId: request.body.merge_request.id,
-            },
-        };
-        await deploy.handle<Context>(comment, command, createComment);
-    } else {
-        response.end("not a command");
-    }
+export function getIssueCommentOperator(request: libs.express.Request): string | number {
+    return request.body.object_attributes.author_id;
+}
+
+export function getIssueComment(request: libs.express.Request): string {
+    return request.body.object_attributes.note;
+}
+
+export async function publish(request: libs.express.Request, application: settings.Application, operator: string | number, comment: string) {
+    const projectId: number = request.body.project_id;
+    const mergeRequestId: number = request.body.merge_request.id;
+    const command = {
+        command: application.deployCommand,
+        context: {
+            projectId,
+            mergeRequestId,
+        },
+    };
+    await deploy.handle<Context>(comment, command, createComment);
+}
+
+export function getPullRequestAction(request: libs.express.Request): string {
+    return request.body.object_attributes.action;
+}
+
+export const pullRequestOpenActionName = "open";
+export const pullRequestUpdateActionName = "update";
+
+export function isPullRequestMerged(request: libs.express.Request, action: string): boolean {
+    return action === "merge";
+}
+
+export function isPullRequestClosed(request: libs.express.Request, action: string): boolean {
+    return action === "close";
+}
+
+export function pullRequestOpened(request: libs.express.Request, application: settings.Application) {
+    // todo
+}
+
+export function pullRequestUpdated(request: libs.express.Request, application: settings.Application) {
+    // todo
+}
+
+export function pullRequestMerged(request: libs.express.Request, application: settings.Application) {
+    // todo
+}
+
+export function pullRequestClosed(request: libs.express.Request, application: settings.Application) {
+    // todo
 }
