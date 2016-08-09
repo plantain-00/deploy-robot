@@ -70,13 +70,13 @@ app.post("/", async (request, response) => {
         } else if (eventName === handler.pullRequestEventName) {
             const action = handler.getPullRequestAction(request);
             if (action === handler.pullRequestOpenActionName) {
-                handler.pullRequestOpened();
+                handler.pullRequestOpened(request, application);
             } else if (action === handler.pullRequestUpdateActionName) {
-                handler.pullRequestUpdated();
+                handler.pullRequestUpdated(request, application);
             } else if (handler.isPullRequestMerged) {
-                handler.pullRequestMerged();
+                handler.pullRequestMerged(request, application);
             } else if (handler.isPullRequestClosed) {
-                handler.pullRequestClosed();
+                handler.pullRequestClosed(request, application);
             } else {
                 response.end(`can not handle action: ${action}.`);
             }
