@@ -16,13 +16,12 @@ export interface Application {
 
 export const applications: Application[] = [];
 
-// github:
-export let accessToken: string = process.env.DEPLOY_ROBOT_ACCESS_TOKEN;
+const argv = libs.minimist(process.argv.slice(2), {
+    "--": true,
+});
 
-// gitlab:
-export let privateToken: string = process.env.DEPLOY_ROBOT_PRIVATE_TOKEN;
-
-export let type: "github" | "gitlab" = "github";
+export let mode: string = argv["mode"] || argv["m"] || "github";
+export let port: number = argv["port"] || argv["p"] || 9996;
 
 interface Handler {
     issueCommentEventName: string;

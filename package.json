@@ -21,6 +21,7 @@
     "body-parser": "^1.15.1",
     "crypto-js": "^3.1.6",
     "express": "^4.13.4",
+    "minimist": "^1.2.0",
     "request": "^2.72.0"
   },
   "engines": {
@@ -30,6 +31,7 @@
     "@types/body-parser": "0.0.29",
     "@types/crypto-js": "^3.1.28",
     "@types/express": "^4.0.29",
+    "@types/minimist": "^1.1.28",
     "@types/request": "0.0.27",
     "tslint": "^3.14.0",
     "typescript": "^2.0.0"

@@ -25,3 +25,6 @@ export function exec(command: string) {
 }
 
 export const getPort: () => Promise<number> = require("get-port");
+
+import * as minimist from "minimist";
+export { minimist };

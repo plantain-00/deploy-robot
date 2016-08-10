@@ -1,6 +1,8 @@
 import * as libs from "./libs";
 import * as settings from "./settings";
 
+const accessToken: string = process.env.DEPLOY_ROBOT_ACCESS_TOKEN;
+
 function getSignature(body: string, secret: string) {
     return "sha1=" + libs.cryptoJs.HmacSHA1(body, secret).toString();
 }
@@ -21,7 +23,7 @@ export function createComment(content: string, context: {
                 body: `@${context.operator}, ${content}`,
             },
             headers: {
-                Authorization: `token ${settings.accessToken}`,
+                Authorization: `token ${accessToken}`,
                 "User-Agent": "SubsNoti-robot",
             },
         }, (error, incomingMessage, body) => {

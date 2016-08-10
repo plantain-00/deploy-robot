@@ -2,6 +2,7 @@ import * as libs from "./libs";
 import * as settings from "./settings";
 
 const gitlabHost = "https://gitlab.com";
+const privateToken: string = process.env.DEPLOY_ROBOT_PRIVATE_TOKEN;
 
 export function createComment(content: string, context: {
     projectId: number;
@@ -17,7 +18,7 @@ export function createComment(content: string, context: {
                 body: content,
             },
             headers: {
-                "PRIVATE-TOKEN": settings.privateToken,
+                "PRIVATE-TOKEN": privateToken,
             },
         }, (error, incomingMessage, body) => {
             if (error) {

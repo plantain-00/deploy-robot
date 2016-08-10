@@ -8,9 +8,9 @@ const app = libs.express();
 app.use(libs.bodyParser.json());
 app.use(libs.bodyParser.urlencoded({ extended: true }));
 
-if (settings.type === "github") {
+if (settings.mode === "github") {
     settings.setHandler(github);
-} else if (settings.type === "gitlab") {
+} else if (settings.mode === "gitlab") {
     settings.setHandler(gitlab);
 } else {
     console.log("invalid `type` in `settings.js`");
@@ -76,8 +76,6 @@ app.post("/", async (request, response) => {
     }
 });
 
-const port = 9996;
-
-app.listen(port, "localhost", () => {
-    console.log(`deploy robot is listening: ${port} in mode: ${settings.type}`);
+app.listen(settings.port, "localhost", () => {
+    console.log(`deploy robot is listening: ${settings.port} in mode: ${settings.mode}`);
 });
