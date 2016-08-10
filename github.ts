@@ -1,5 +1,4 @@
 import * as libs from "./libs";
-import * as settings from "./settings";
 
 const accessToken: string = process.env.DEPLOY_ROBOT_ACCESS_TOKEN;
 
@@ -42,7 +41,7 @@ export function getRepositoryName(request: libs.express.Request): string {
     return request.body.repository.name;
 }
 
-export function verifySignature(request: libs.express.Request, application: settings.Application) {
+export function verifySignature(request: libs.express.Request, application: libs.Application) {
     const remoteSignature: string = request.header("X-Hub-Signature");
     const signature = getSignature(JSON.stringify(request.body), application.secret);
     return signature === remoteSignature;
@@ -67,7 +66,7 @@ export function getIssueComment(request: libs.express.Request): string {
     return request.body.comment.body;
 }
 
-export function getCommentCreationContext(request: libs.express.Request, application: settings.Application, operator: string | number): any {
+export function getCommentCreationContext(request: libs.express.Request, application: libs.Application, operator: string | number): any {
     return {
         owner: request.body.repository.owner.login,
         repo: application.repositoryName,

@@ -1,5 +1,4 @@
 import * as libs from "./libs";
-import * as settings from "./settings";
 
 const gitlabHost = "https://gitlab.com";
 const privateToken: string = process.env.DEPLOY_ROBOT_PRIVATE_TOKEN;
@@ -36,7 +35,7 @@ export function getRepositoryName(request: libs.express.Request): string {
     return request.body.repository.name;
 }
 
-export function verifySignature(request: libs.express.Request, application: settings.Application) {
+export function verifySignature(request: libs.express.Request, application: libs.Application) {
     const token = request.header("X-Gitlab-Token");
     return token === application.secret;
 }
@@ -60,7 +59,7 @@ export function getIssueComment(request: libs.express.Request): string {
     return request.body.object_attributes.note;
 }
 
-export function getCommentCreationContext(request: libs.express.Request, application: settings.Application, operator: string | number): any {
+export function getCommentCreationContext(request: libs.express.Request, application: libs.Application, operator: string | number): any {
     return {
         projectId: request.body.project_id,
         mergeRequestId: request.body.merge_request.id,

@@ -28,3 +28,17 @@ export const getPort: () => Promise<number> = require("get-port");
 
 import * as minimist from "minimist";
 export { minimist };
+
+/**
+ * operators: for github, it's name; for gitlab, it's id, can be found in the html
+ */
+export interface Application {
+    repositoryName: string;
+    secret: string;
+    operators: (string | number)[];
+    deployCommand: string;
+    pullRequestMergedCommand: string;
+    pullRequestOpenedCommand: string;
+    pullRequestClosedCommand: string;
+    pullRequestUpdatedCommand: string;
+}
