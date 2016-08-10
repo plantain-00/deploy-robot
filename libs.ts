@@ -24,7 +24,4 @@ export function exec(command: string) {
     });
 }
 
-const getPort: () => Promise<number> = require("get-port");
-getPort().then(port => {
-    console.log(port);
-});
+export const getPort: () => Promise<number> = require("get-port");

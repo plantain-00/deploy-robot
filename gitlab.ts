@@ -1,15 +1,12 @@
 import * as libs from "./libs";
 import * as settings from "./settings";
-import * as deploy from "./deploy";
 
 const gitlabHost = "https://gitlab.com";
 
-interface Context {
+export function createComment(content: string, context: {
     projectId: number;
     mergeRequestId: number;
-}
-
-function createComment(content: string, context: Context) {
+}) {
     const url = `${gitlabHost}/api/v3/projects/${context.projectId}/merge_requests/${context.mergeRequestId}/notes`;
     return new Promise<void>((resolve, reject) => {
         libs.request({
@@ -54,21 +51,19 @@ export function getIssueCommentOperator(request: libs.express.Request): string |
     return request.body.object_attributes.author_id;
 }
 
+export function getPullRequestOperator(request: libs.express.Request): string | number {
+    return request.body.object_attributes.author_id;
+}
+
 export function getIssueComment(request: libs.express.Request): string {
     return request.body.object_attributes.note;
 }
 
-export async function publish(request: libs.express.Request, application: settings.Application, operator: string | number, comment: string) {
-    const projectId: number = request.body.project_id;
-    const mergeRequestId: number = request.body.merge_request.id;
-    const command = {
-        command: application.deployCommand,
-        context: {
-            projectId,
-            mergeRequestId,
-        },
+export function getCommentCreationContext(request: libs.express.Request, application: settings.Application, operator: string | number): any {
+    return {
+        projectId: request.body.project_id,
+        mergeRequestId: request.body.merge_request.id,
     };
-    await deploy.handle<Context>(comment, command, createComment);
 }
 
 export function getPullRequestAction(request: libs.express.Request): string {
@@ -84,20 +79,4 @@ export function isPullRequestMerged(request: libs.express.Request, action: strin
 
 export function isPullRequestClosed(request: libs.express.Request, action: string): boolean {
     return action === "close";
-}
-
-export function pullRequestOpened(request: libs.express.Request, application: settings.Application) {
-    // todo
-}
-
-export function pullRequestUpdated(request: libs.express.Request, application: settings.Application) {
-    // todo
-}
-
-export function pullRequestMerged(request: libs.express.Request, application: settings.Application) {
-    // todo
-}
-
-export function pullRequestClosed(request: libs.express.Request, application: settings.Application) {
-    // todo
 }
