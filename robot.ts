@@ -25,12 +25,13 @@ if (mode === "github") {
     process.exit(1);
 }
 
-let commands: Command[] = [];
+const ports: { [repositoryName: string]: { [pullRequestId: number]: number } } = {};
 
 /**
  * commands are designed be excuted one by one in a process globally.
  */
 let isExecuting = false;
+let commands: Command[] = [];
 async function runCommands() {
     if (!isExecuting) {
         isExecuting = true;
@@ -66,6 +67,9 @@ app.post("/", async (request, response) => {
             response.end("name of repository is not found");
             return;
         }
+        if (!ports[repositoryName]) {
+            ports[repositoryName] = {};
+        }
         const signatureIsValid = handler.verifySignature(request, application);
         if (signatureIsValid) {
             response.end("signatures don't match");
@@ -93,9 +97,12 @@ app.post("/", async (request, response) => {
         } else if (eventName === handler.pullRequestEventName) {
             const action = handler.getPullRequestAction(request);
             const operator = handler.getPullRequestOperator(request);
+            const pullRequestId = handler.getPullRequestId(request);
             const context = handler.getCommentCreationContext(request, application, operator);
             if (action === handler.pullRequestOpenActionName) {
-                commands.push({ command: application.pullRequestOpenedCommand, context });
+                const availablePort = await libs.getPort();
+                ports[repositoryName][pullRequestId] = pullRequestId;
+                commands.push({ command: `${application.pullRequestOpenedCommand} ${availablePort}`, context });
             } else if (action === handler.pullRequestUpdateActionName) {
                 commands.push({ command: application.pullRequestUpdatedCommand, context });
             } else if (handler.isPullRequestMerged) {
@@ -137,6 +144,7 @@ type Handler = {
     isPullRequestClosed(request: libs.express.Request, action: string): boolean;
     createComment(content: string, context: any): Promise<void>;
     getPullRequestOperator(request: libs.express.Request): string | number;
+    getPullRequestId(request: libs.express.Request): number;
 }
 
 type Command = {

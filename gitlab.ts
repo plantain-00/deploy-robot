@@ -80,3 +80,7 @@ export function isPullRequestMerged(request: libs.express.Request, action: strin
 export function isPullRequestClosed(request: libs.express.Request, action: string): boolean {
     return action === "close";
 }
+
+export function getPullRequestId(request: libs.express.Request): number {
+    return request.body.object_attributes.id;
+}

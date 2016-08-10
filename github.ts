@@ -95,3 +95,7 @@ export function isPullRequestClosed(request: libs.express.Request, action: strin
     }
     return false;
 }
+
+export function getPullRequestId(request: libs.express.Request): number {
+    return request.body.pull_request.id;
+}
