@@ -1,17 +1,18 @@
 {
   "name": "deploy-robot",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "a deploy robot fired by comment",
-  "main": "robot.js",
+  "main": "dist/robot.js",
   "scripts": {
     "tslint": "tslint '*.ts'",
-    "build": "tsc"
+    "build": "tsc",
+    "start": "node dist/start.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/plantain-00/deploy-robot.git"
   },
-  "author": "yao",
+  "author": "york yao",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/plantain-00/deploy-robot/issues"
@@ -35,5 +36,6 @@
     "@types/request": "0.0.27",
     "tslint": "^3.14.0",
     "typescript": "^2.0.0"
-  }
+  },
+  "types": "./dist/robot.d.ts"
 }

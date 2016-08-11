@@ -11,16 +11,17 @@
 + `npm i`
 + `npm run build`
 + `npm run tslint`
-+ `node robot.js`
++ `node start.js`
 
 ## options
 
 + `-m --mode [mode]`
 + `-p --port [port]`
++ `-h --host [host]`
 
 ## examples
 
-+ `node robot.js -m github -p 3000`
++ `node dist/start.js -m github -p 3000 -h 0.0.0.0`
 
 ## In Github, Gitlab
 

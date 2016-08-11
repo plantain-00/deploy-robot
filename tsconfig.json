@@ -8,6 +8,8 @@
         "noImplicitThis": true,
         "strictNullChecks": true,
         "noImplicitReturns": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "outDir": "dist",
+        "declaration": true
     }
 }
