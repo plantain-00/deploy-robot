@@ -4,7 +4,7 @@
   "description": "a deploy robot fired by comment",
   "main": "dist/robot.js",
   "scripts": {
-    "tslint": "tslint '*.ts'",
+    "tslint": "tslint \"src/*.ts\"",
     "build": "tsc",
     "start": "node dist/start.js"
   },
