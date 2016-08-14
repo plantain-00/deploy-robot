@@ -79,4 +79,8 @@ function getPullRequestId(request) {
     return request.body.object_attributes.id;
 }
 exports.getPullRequestId = getPullRequestId;
+function getBranchName(request) {
+    return request.body.object_attributes.source_branch;
+}
+exports.getBranchName = getBranchName;
 //# sourceMappingURL=gitlab.js.map

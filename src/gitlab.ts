@@ -84,3 +84,7 @@ export function isPullRequestClosed(request: libs.express.Request, action: strin
 export function getPullRequestId(request: libs.express.Request): number {
     return request.body.object_attributes.id;
 }
+
+export function getBranchName(request: libs.express.Request): string {
+    return request.body.object_attributes.source_branch;
+}

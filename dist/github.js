@@ -91,4 +91,8 @@ function getPullRequestId(request) {
     return request.body.pull_request.id;
 }
 exports.getPullRequestId = getPullRequestId;
+function getBranchName(request) {
+    return request.body.pull_request.head.ref;
+}
+exports.getBranchName = getBranchName;
 //# sourceMappingURL=github.js.map

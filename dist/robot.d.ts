@@ -37,6 +37,7 @@ export declare type Handler = {
     createComment(content: string, context: any): Promise<void>;
     getPullRequestOperator(request: libs.express.Request): string | number;
     getPullRequestId(request: libs.express.Request): number;
+    getBranchName(request: libs.express.Request): string;
 };
 export declare type Command = {
     context: any;

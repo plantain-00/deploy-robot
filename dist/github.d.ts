@@ -21,3 +21,4 @@ export declare const pullRequestUpdateActionName: string;
 export declare function isPullRequestMerged(request: libs.express.Request, action: string): boolean;
 export declare function isPullRequestClosed(request: libs.express.Request, action: string): boolean;
 export declare function getPullRequestId(request: libs.express.Request): number;
+export declare function getBranchName(request: libs.express.Request): string;

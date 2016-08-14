@@ -99,3 +99,7 @@ export function isPullRequestClosed(request: libs.express.Request, action: strin
 export function getPullRequestId(request: libs.express.Request): number {
     return request.body.pull_request.id;
 }
+
+export function getBranchName(request: libs.express.Request): string {
+    return request.body.pull_request.head.ref;
+}

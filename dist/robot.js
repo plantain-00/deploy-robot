@@ -125,18 +125,33 @@ function start(app, path, mode, options) {
                 const context = handler.getCommentCreationContext(request, application, operator);
                 if (action === handler.pullRequestOpenActionName) {
                     const availablePort = yield libs.getPort();
-                    exports.ports[repositoryName][pullRequestId] = pullRequestId;
+                    exports.ports[repositoryName][pullRequestId] = availablePort;
                     yield onPortsUpdated();
                     exports.commands.push({ command: `${application.pullRequestOpenedCommand} ${availablePort}`, context });
                 }
                 else if (action === handler.pullRequestUpdateActionName) {
-                    exports.commands.push({ command: application.pullRequestUpdatedCommand, context });
+                    const port = exports.ports[repositoryName][pullRequestId];
+                    if (!port) {
+                        response.end(`no pull request: ${pullRequestId}.`);
+                        return;
+                    }
+                    exports.commands.push({ command: `${application.pullRequestUpdatedCommand} ${port}`, context });
                 }
                 else if (handler.isPullRequestMerged) {
-                    exports.commands.push({ command: application.pullRequestMergedCommand, context });
+                    const port = exports.ports[repositoryName][pullRequestId];
+                    if (!port) {
+                        response.end(`no pull request: ${pullRequestId}.`);
+                        return;
+                    }
+                    exports.commands.push({ command: `${application.pullRequestMergedCommand} ${port}`, context });
                 }
                 else if (handler.isPullRequestClosed) {
-                    exports.commands.push({ command: application.pullRequestClosedCommand, context });
+                    const port = exports.ports[repositoryName][pullRequestId];
+                    if (!port) {
+                        response.end(`no pull request: ${pullRequestId}.`);
+                        return;
+                    }
+                    exports.commands.push({ command: `${application.pullRequestClosedCommand} ${port}`, context });
                 }
                 else {
                     response.end(`can not handle action: ${action}.`);

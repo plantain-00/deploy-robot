@@ -37,6 +37,7 @@ export interface Application {
     secret: string;
     operators: (string | number)[];
     deployCommand: string;
+    repositoryUrl: string;
     pullRequestMergedCommand: string;
     pullRequestOpenedCommand: string;
     pullRequestClosedCommand: string;

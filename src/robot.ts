@@ -124,15 +124,30 @@ export function start(app: libs.express.Application, path: string, mode: string,
                 const context = handler.getCommentCreationContext(request, application, operator);
                 if (action === handler.pullRequestOpenActionName) {
                     const availablePort = await libs.getPort();
-                    ports[repositoryName][pullRequestId] = pullRequestId;
+                    ports[repositoryName][pullRequestId] = availablePort;
                     await onPortsUpdated();
                     commands.push({ command: `${application.pullRequestOpenedCommand} ${availablePort}`, context });
                 } else if (action === handler.pullRequestUpdateActionName) {
-                    commands.push({ command: application.pullRequestUpdatedCommand, context });
+                    const port = ports[repositoryName][pullRequestId];
+                    if (!port) {
+                        response.end(`no pull request: ${pullRequestId}.`);
+                        return;
+                    }
+                    commands.push({ command: `${application.pullRequestUpdatedCommand} ${port}`, context });
                 } else if (handler.isPullRequestMerged) {
-                    commands.push({ command: application.pullRequestMergedCommand, context });
+                    const port = ports[repositoryName][pullRequestId];
+                    if (!port) {
+                        response.end(`no pull request: ${pullRequestId}.`);
+                        return;
+                    }
+                    commands.push({ command: `${application.pullRequestMergedCommand} ${port}`, context });
                 } else if (handler.isPullRequestClosed) {
-                    commands.push({ command: application.pullRequestClosedCommand, context });
+                    const port = ports[repositoryName][pullRequestId];
+                    if (!port) {
+                        response.end(`no pull request: ${pullRequestId}.`);
+                        return;
+                    }
+                    commands.push({ command: `${application.pullRequestClosedCommand} ${port}`, context });
                 } else {
                     response.end(`can not handle action: ${action}.`);
                     return;
@@ -167,6 +182,7 @@ export type Handler = {
     createComment(content: string, context: any): Promise<void>;
     getPullRequestOperator(request: libs.express.Request): string | number;
     getPullRequestId(request: libs.express.Request): number;
+    getBranchName(request: libs.express.Request): string;
 }
 
 export type Command = {
