@@ -40,12 +40,12 @@ export interface Application {
     commentDeploy: {
         operators: (string | number)[];
         command: string;
-    }
+    };
     pullRequest: {
         testRootUrl: string;
         mergedCommand: string;
         openedCommand: string;
         closedCommand: string;
         updatedCommand: string;
-    }
+    };
 }
