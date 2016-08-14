@@ -34,12 +34,18 @@ export { minimist };
  */
 export interface Application {
     repositoryName: string;
-    secret: string;
-    operators: (string | number)[];
-    deployCommand: string;
-    repositoryUrl: string;
-    pullRequestMergedCommand: string;
-    pullRequestOpenedCommand: string;
-    pullRequestClosedCommand: string;
-    pullRequestUpdatedCommand: string;
+    robot: {
+        secret: string;
+    };
+    commentDeploy: {
+        operators: (string | number)[];
+        command: string;
+    }
+    pullRequest: {
+        testRootUrl: string;
+        mergedCommand: string;
+        openedCommand: string;
+        closedCommand: string;
+        updatedCommand: string;
+    }
 }

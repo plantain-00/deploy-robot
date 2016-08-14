@@ -43,7 +43,7 @@ export function getRepositoryName(request: libs.express.Request): string {
 
 export function verifySignature(request: libs.express.Request, application: libs.Application) {
     const remoteSignature: string = request.header("X-Hub-Signature");
-    const signature = getSignature(JSON.stringify(request.body), application.secret);
+    const signature = getSignature(JSON.stringify(request.body), application.robot.secret);
     return signature === remoteSignature;
 }
 
@@ -66,11 +66,20 @@ export function getIssueComment(request: libs.express.Request): string {
     return request.body.comment.body;
 }
 
-export function getCommentCreationContext(request: libs.express.Request, application: libs.Application, operator: string | number): any {
+export function getIssueCommentCreationContext(request: libs.express.Request, application: libs.Application, operator: string | number): any {
     return {
         owner: request.body.repository.owner.login,
         repo: application.repositoryName,
         issueNumber: request.body.issue.number,
+        operator,
+    };
+}
+
+export function getPullRequestCommentCreationContext(request: libs.express.Request, application: libs.Application, operator: string | number): any {
+    return {
+        owner: request.body.repository.owner.login,
+        repo: application.repositoryName,
+        issueNumber: request.body.pull_request.number,
         operator,
     };
 }
@@ -80,7 +89,7 @@ export function getPullRequestAction(request: libs.express.Request): string {
 }
 
 export const pullRequestOpenActionName = "opened";
-export const pullRequestUpdateActionName = "synchronized";
+export const pullRequestUpdateActionName = "synchronize";
 
 export function isPullRequestMerged(request: libs.express.Request, action: string): boolean {
     if (action === "closed") {

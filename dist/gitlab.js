@@ -33,7 +33,7 @@ function getRepositoryName(request) {
 exports.getRepositoryName = getRepositoryName;
 function verifySignature(request, application) {
     const token = request.header("X-Gitlab-Token");
-    return token === application.secret;
+    return token === application.robot.secret;
 }
 exports.verifySignature = verifySignature;
 function getEventName(request) {
@@ -54,13 +54,20 @@ function getIssueComment(request) {
     return request.body.object_attributes.note;
 }
 exports.getIssueComment = getIssueComment;
-function getCommentCreationContext(request, application, operator) {
+function getIssueCommentCreationContext(request, application, operator) {
     return {
         projectId: request.body.project_id,
         mergeRequestId: request.body.merge_request.id,
     };
 }
-exports.getCommentCreationContext = getCommentCreationContext;
+exports.getIssueCommentCreationContext = getIssueCommentCreationContext;
+function getPullRequestCommentCreationContext(request, application, operator) {
+    return {
+        projectId: request.body.project_id,
+        mergeRequestId: request.body.merge_request.id,
+    };
+}
+exports.getPullRequestCommentCreationContext = getPullRequestCommentCreationContext;
 function getPullRequestAction(request) {
     return request.body.object_attributes.action;
 }

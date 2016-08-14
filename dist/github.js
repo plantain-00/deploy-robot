@@ -36,7 +36,7 @@ function getRepositoryName(request) {
 exports.getRepositoryName = getRepositoryName;
 function verifySignature(request, application) {
     const remoteSignature = request.header("X-Hub-Signature");
-    const signature = getSignature(JSON.stringify(request.body), application.secret);
+    const signature = getSignature(JSON.stringify(request.body), application.robot.secret);
     return signature === remoteSignature;
 }
 exports.verifySignature = verifySignature;
@@ -58,7 +58,7 @@ function getIssueComment(request) {
     return request.body.comment.body;
 }
 exports.getIssueComment = getIssueComment;
-function getCommentCreationContext(request, application, operator) {
+function getIssueCommentCreationContext(request, application, operator) {
     return {
         owner: request.body.repository.owner.login,
         repo: application.repositoryName,
@@ -66,13 +66,22 @@ function getCommentCreationContext(request, application, operator) {
         operator,
     };
 }
-exports.getCommentCreationContext = getCommentCreationContext;
+exports.getIssueCommentCreationContext = getIssueCommentCreationContext;
+function getPullRequestCommentCreationContext(request, application, operator) {
+    return {
+        owner: request.body.repository.owner.login,
+        repo: application.repositoryName,
+        issueNumber: request.body.pull_request.number,
+        operator,
+    };
+}
+exports.getPullRequestCommentCreationContext = getPullRequestCommentCreationContext;
 function getPullRequestAction(request) {
     return request.body.action;
 }
 exports.getPullRequestAction = getPullRequestAction;
 exports.pullRequestOpenActionName = "opened";
-exports.pullRequestUpdateActionName = "synchronized";
+exports.pullRequestUpdateActionName = "synchronize";
 function isPullRequestMerged(request, action) {
     if (action === "closed") {
         return request.body.pull_request.merged;

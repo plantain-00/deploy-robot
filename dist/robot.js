@@ -41,7 +41,7 @@ function runCommands() {
                     const newCommands = [];
                     for (const c of exports.commands) {
                         if (c.command === firstCommand.command) {
-                            yield handler.createComment("it's done now.", c.context);
+                            yield handler.createComment(c.context.doneText || "it's done now.", c.context);
                         }
                         else {
                             newCommands.push(c);
@@ -53,6 +53,7 @@ function runCommands() {
                 catch (error) {
                     console.log(error);
                     yield handler.createComment(error, firstCommand.context);
+                    exports.commands = exports.commands.splice(1);
                 }
             }
             isExecuting = false;
@@ -92,14 +93,14 @@ function start(app, path, mode, options) {
                 yield onPortsUpdated();
             }
             const signatureIsValid = handler.verifySignature(request, application);
-            if (signatureIsValid) {
+            if (!signatureIsValid) {
                 response.end("signatures don't match");
                 return;
             }
             const eventName = handler.getEventName(request);
             if (eventName === handler.issueCommentEventName) {
                 const operator = handler.getIssueCommentOperator(request);
-                if (application.operators.findIndex(value => value === operator) < 0) {
+                if (application.commentDeploy.operators.findIndex(value => value === operator) < 0) {
                     response.end("not valid operator");
                     return;
                 }
@@ -108,8 +109,8 @@ function start(app, path, mode, options) {
                     && comment.indexOf("deploy") >= 0
                     && comment.indexOf("please") >= 0) {
                     response.end("command accepted");
-                    const context = handler.getCommentCreationContext(request, application, operator);
-                    exports.commands.push({ command: application.deployCommand, context });
+                    const context = handler.getIssueCommentCreationContext(request, application, operator);
+                    exports.commands.push({ command: application.commentDeploy.command, context });
                     yield onCommandsUpdated();
                     yield handler.createComment("it may take a few minutes to finish it.", context);
                     yield runCommands();
@@ -119,15 +120,18 @@ function start(app, path, mode, options) {
                 }
             }
             else if (eventName === handler.pullRequestEventName) {
+                response.end("command accepted");
                 const action = handler.getPullRequestAction(request);
                 const operator = handler.getPullRequestOperator(request);
                 const pullRequestId = handler.getPullRequestId(request);
-                const context = handler.getCommentCreationContext(request, application, operator);
+                const context = handler.getPullRequestCommentCreationContext(request, application, operator);
                 if (action === handler.pullRequestOpenActionName) {
                     const availablePort = yield libs.getPort();
                     exports.ports[repositoryName][pullRequestId] = availablePort;
                     yield onPortsUpdated();
-                    exports.commands.push({ command: `${application.pullRequestOpenedCommand} ${availablePort}`, context });
+                    const branchName = handler.getBranchName(request);
+                    context.doneText = `it's done now. you can test it at ${application.pullRequest.testRootUrl}:${availablePort}`;
+                    exports.commands.push({ command: `${application.pullRequest.openedCommand} ${availablePort} ${branchName}`, context });
                 }
                 else if (action === handler.pullRequestUpdateActionName) {
                     const port = exports.ports[repositoryName][pullRequestId];
@@ -135,7 +139,7 @@ function start(app, path, mode, options) {
                         response.end(`no pull request: ${pullRequestId}.`);
                         return;
                     }
-                    exports.commands.push({ command: `${application.pullRequestUpdatedCommand} ${port}`, context });
+                    exports.commands.push({ command: `${application.pullRequest.updatedCommand} ${port}`, context });
                 }
                 else if (handler.isPullRequestMerged) {
                     const port = exports.ports[repositoryName][pullRequestId];
@@ -143,7 +147,7 @@ function start(app, path, mode, options) {
                         response.end(`no pull request: ${pullRequestId}.`);
                         return;
                     }
-                    exports.commands.push({ command: `${application.pullRequestMergedCommand} ${port}`, context });
+                    exports.commands.push({ command: `${application.pullRequest.mergedCommand} ${port}`, context });
                 }
                 else if (handler.isPullRequestClosed) {
                     const port = exports.ports[repositoryName][pullRequestId];
@@ -151,7 +155,7 @@ function start(app, path, mode, options) {
                         response.end(`no pull request: ${pullRequestId}.`);
                         return;
                     }
-                    exports.commands.push({ command: `${application.pullRequestClosedCommand} ${port}`, context });
+                    exports.commands.push({ command: `${application.pullRequest.closedCommand} ${port}`, context });
                 }
                 else {
                     response.end(`can not handle action: ${action}.`);

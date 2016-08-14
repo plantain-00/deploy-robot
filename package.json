@@ -1,6 +1,6 @@
 {
   "name": "node-deploy-robot",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "a deploy robot fired by comment",
   "main": "dist/robot.js",
   "scripts": {
@@ -22,6 +22,7 @@
     "body-parser": "^1.15.1",
     "crypto-js": "^3.1.6",
     "express": "^4.13.4",
+    "get-port": "^2.1.0",
     "minimist": "^1.2.0",
     "request": "^2.72.0"
   },

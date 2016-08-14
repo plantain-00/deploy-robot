@@ -37,7 +37,7 @@ export function getRepositoryName(request: libs.express.Request): string {
 
 export function verifySignature(request: libs.express.Request, application: libs.Application) {
     const token = request.header("X-Gitlab-Token");
-    return token === application.secret;
+    return token === application.robot.secret;
 }
 
 export function getEventName(request: libs.express.Request) {
@@ -59,7 +59,14 @@ export function getIssueComment(request: libs.express.Request): string {
     return request.body.object_attributes.note;
 }
 
-export function getCommentCreationContext(request: libs.express.Request, application: libs.Application, operator: string | number): any {
+export function getIssueCommentCreationContext(request: libs.express.Request, application: libs.Application, operator: string | number): any {
+    return {
+        projectId: request.body.project_id,
+        mergeRequestId: request.body.merge_request.id,
+    };
+}
+
+export function getPullRequestCommentCreationContext(request: libs.express.Request, application: libs.Application, operator: string | number): any {
     return {
         projectId: request.body.project_id,
         mergeRequestId: request.body.merge_request.id,

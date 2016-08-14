@@ -36,7 +36,7 @@ async function runCommands() {
                 const newCommands: Command[] = [];
                 for (const c of commands) {
                     if (c.command === firstCommand.command) {
-                        await handler.createComment("it's done now.", c.context);
+                        await handler.createComment(c.context.doneText || "it's done now.", c.context);
                     } else {
                         newCommands.push(c);
                     }
@@ -47,6 +47,7 @@ async function runCommands() {
             } catch (error) {
                 console.log(error);
                 await handler.createComment(error, firstCommand.context);
+                commands = commands.splice(1);
             }
         }
         isExecuting = false;
@@ -93,14 +94,14 @@ export function start(app: libs.express.Application, path: string, mode: string,
                 await onPortsUpdated();
             }
             const signatureIsValid = handler.verifySignature(request, application);
-            if (signatureIsValid) {
+            if (!signatureIsValid) {
                 response.end("signatures don't match");
                 return;
             }
             const eventName = handler.getEventName(request);
             if (eventName === handler.issueCommentEventName) {
                 const operator = handler.getIssueCommentOperator(request);
-                if (application.operators.findIndex(value => value === operator) < 0) {
+                if (application.commentDeploy.operators.findIndex(value => value === operator) < 0) {
                     response.end("not valid operator");
                     return;
                 }
@@ -109,8 +110,8 @@ export function start(app: libs.express.Application, path: string, mode: string,
                     && comment.indexOf("deploy") >= 0
                     && comment.indexOf("please") >= 0) {
                     response.end("command accepted");
-                    const context = handler.getCommentCreationContext(request, application, operator);
-                    commands.push({ command: application.deployCommand, context });
+                    const context = handler.getIssueCommentCreationContext(request, application, operator);
+                    commands.push({ command: application.commentDeploy.command, context });
                     await onCommandsUpdated();
                     await handler.createComment("it may take a few minutes to finish it.", context);
                     await runCommands();
@@ -118,36 +119,39 @@ export function start(app: libs.express.Application, path: string, mode: string,
                     response.end("not a command");
                 }
             } else if (eventName === handler.pullRequestEventName) {
+                response.end("command accepted");
                 const action = handler.getPullRequestAction(request);
                 const operator = handler.getPullRequestOperator(request);
                 const pullRequestId = handler.getPullRequestId(request);
-                const context = handler.getCommentCreationContext(request, application, operator);
+                const context = handler.getPullRequestCommentCreationContext(request, application, operator);
                 if (action === handler.pullRequestOpenActionName) {
                     const availablePort = await libs.getPort();
                     ports[repositoryName][pullRequestId] = availablePort;
                     await onPortsUpdated();
-                    commands.push({ command: `${application.pullRequestOpenedCommand} ${availablePort}`, context });
+                    const branchName = handler.getBranchName(request);
+                    context.doneText = `it's done now. you can test it at ${application.pullRequest.testRootUrl}:${availablePort}`;
+                    commands.push({ command: `${application.pullRequest.openedCommand} ${availablePort} ${branchName}`, context });
                 } else if (action === handler.pullRequestUpdateActionName) {
                     const port = ports[repositoryName][pullRequestId];
                     if (!port) {
                         response.end(`no pull request: ${pullRequestId}.`);
                         return;
                     }
-                    commands.push({ command: `${application.pullRequestUpdatedCommand} ${port}`, context });
+                    commands.push({ command: `${application.pullRequest.updatedCommand} ${port}`, context });
                 } else if (handler.isPullRequestMerged) {
                     const port = ports[repositoryName][pullRequestId];
                     if (!port) {
                         response.end(`no pull request: ${pullRequestId}.`);
                         return;
                     }
-                    commands.push({ command: `${application.pullRequestMergedCommand} ${port}`, context });
+                    commands.push({ command: `${application.pullRequest.mergedCommand} ${port}`, context });
                 } else if (handler.isPullRequestClosed) {
                     const port = ports[repositoryName][pullRequestId];
                     if (!port) {
                         response.end(`no pull request: ${pullRequestId}.`);
                         return;
                     }
-                    commands.push({ command: `${application.pullRequestClosedCommand} ${port}`, context });
+                    commands.push({ command: `${application.pullRequest.closedCommand} ${port}`, context });
                 } else {
                     response.end(`can not handle action: ${action}.`);
                     return;
@@ -175,7 +179,8 @@ export type Handler = {
     getEventName(request: libs.express.Request): string;
     getIssueCommentOperator(request: libs.express.Request): string | number;
     getIssueComment(request: libs.express.Request): string;
-    getCommentCreationContext(request: libs.express.Request, application: libs.Application, operator: string | number): any;
+    getIssueCommentCreationContext(request: libs.express.Request, application: libs.Application, operator: string | number): any;
+    getPullRequestCommentCreationContext(request: libs.express.Request, application: libs.Application, operator: string | number): any;
     getPullRequestAction(request: libs.express.Request): string;
     isPullRequestMerged(request: libs.express.Request, action: string): boolean;
     isPullRequestClosed(request: libs.express.Request, action: string): boolean;

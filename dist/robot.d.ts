@@ -30,7 +30,8 @@ export declare type Handler = {
     getEventName(request: libs.express.Request): string;
     getIssueCommentOperator(request: libs.express.Request): string | number;
     getIssueComment(request: libs.express.Request): string;
-    getCommentCreationContext(request: libs.express.Request, application: libs.Application, operator: string | number): any;
+    getIssueCommentCreationContext(request: libs.express.Request, application: libs.Application, operator: string | number): any;
+    getPullRequestCommentCreationContext(request: libs.express.Request, application: libs.Application, operator: string | number): any;
     getPullRequestAction(request: libs.express.Request): string;
     isPullRequestMerged(request: libs.express.Request, action: string): boolean;
     isPullRequestClosed(request: libs.express.Request, action: string): boolean;
