@@ -1,8 +1,8 @@
 import * as express from "express";
 export { express };
 
-import * as cryptoJs from "crypto-js";
-export { cryptoJs };
+import * as crypto from "crypto";
+export { crypto };
 
 import * as childProcess from "child_process";
 

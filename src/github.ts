@@ -3,7 +3,7 @@ import * as libs from "./libs";
 const accessToken: string = process.env.DEPLOY_ROBOT_ACCESS_TOKEN;
 
 function getSignature(body: string, secret: string) {
-    return "sha1=" + libs.cryptoJs.HmacSHA1(body, secret).toString();
+    return "sha1=" + libs.crypto.createHmac("sha1", secret).update(body).digest("hex");
 }
 
 export function createComment(content: string, context: {

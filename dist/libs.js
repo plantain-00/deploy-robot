@@ -1,8 +1,8 @@
 "use strict";
 const express = require("express");
 exports.express = express;
-const cryptoJs = require("crypto-js");
-exports.cryptoJs = cryptoJs;
+const crypto = require("crypto");
+exports.crypto = crypto;
 const childProcess = require("child_process");
 const request = require("request");
 exports.request = request;

@@ -2,7 +2,7 @@
 const libs = require("./libs");
 const accessToken = process.env.DEPLOY_ROBOT_ACCESS_TOKEN;
 function getSignature(body, secret) {
-    return "sha1=" + libs.cryptoJs.HmacSHA1(body, secret).toString();
+    return "sha1=" + libs.crypto.createHmac("sha1", secret).update(body).digest("hex");
 }
 function createComment(content, context) {
     const url = `https://api.github.com/repos/${context.owner}/${context.repo}/issues/${context.issueNumber}/comments`;
