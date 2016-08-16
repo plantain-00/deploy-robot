@@ -12,6 +12,10 @@ export declare const applications: libs.Application[];
 export declare const handlers: {
     [modeName: string]: Handler;
 };
+export declare const commentActions: {
+    filter: (comment: string) => boolean;
+    getCommand: (application: libs.Application, request: libs.express.Request) => Promise<string> | string;
+}[];
 export declare let ports: Ports;
 export declare let commands: Command[];
 export declare function start(app: libs.express.Application, path: string, mode: string, options?: {

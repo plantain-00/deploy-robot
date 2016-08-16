@@ -14,6 +14,17 @@ export const applications: libs.Application[] = [];
  */
 export const handlers: { [modeName: string]: Handler } = { github, gitlab };
 
+export const commentActions: { filter: (comment: string) => boolean; getCommand: (application: libs.Application, request: libs.express.Request) => Promise<string> | string; }[] = [
+    {
+        filter: comment => comment.indexOf("robot") >= 0
+            && comment.indexOf("deploy") >= 0
+            && comment.indexOf("please") >= 0,
+        getCommand: (application, issueCommentCreationContext) => {
+            return application.commentDeploy.command;
+        },
+    },
+];
+
 let handler: Handler;
 export let ports: Ports = {};
 let onPortsUpdated: () => Promise<void> = () => Promise.resolve();
@@ -106,18 +117,19 @@ export function start(app: libs.express.Application, path: string, mode: string,
                     return;
                 }
                 const comment = handler.getIssueComment(request);
-                if (comment.indexOf("robot") >= 0
-                    && comment.indexOf("deploy") >= 0
-                    && comment.indexOf("please") >= 0) {
-                    response.end("command accepted");
-                    const context = handler.getIssueCommentCreationContext(request, application, operator);
-                    commands.push({ command: application.commentDeploy.command, context });
-                    await onCommandsUpdated();
-                    await handler.createComment("it may take a few minutes to finish it.", context);
-                    await runCommands();
-                } else {
-                    response.end("not a command");
+                for (const commentAction of commentActions) {
+                    if (commentAction.filter(comment)) {
+                        response.end("command accepted");
+                        const context = handler.getIssueCommentCreationContext(request, application, operator);
+                        const command = await commentAction.getCommand(application, request);
+                        commands.push({ command, context });
+                        await onCommandsUpdated();
+                        await handler.createComment("it may take a few minutes to finish it.", context);
+                        await runCommands();
+                        return;
+                    }
                 }
+                response.end("not a command");
             } else if (eventName === handler.pullRequestEventName) {
                 response.end("command accepted");
                 const action = handler.getPullRequestAction(request);

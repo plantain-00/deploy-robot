@@ -20,6 +20,16 @@ exports.applications = [];
  * you can push other handers in it
  */
 exports.handlers = { github, gitlab };
+exports.commentActions = [
+    {
+        filter: comment => comment.indexOf("robot") >= 0
+            && comment.indexOf("deploy") >= 0
+            && comment.indexOf("please") >= 0,
+        getCommand: (application, issueCommentCreationContext) => {
+            return application.commentDeploy.command;
+        },
+    },
+];
 let handler;
 exports.ports = {};
 let onPortsUpdated = () => Promise.resolve();
@@ -105,19 +115,19 @@ function start(app, path, mode, options) {
                     return;
                 }
                 const comment = handler.getIssueComment(request);
-                if (comment.indexOf("robot") >= 0
-                    && comment.indexOf("deploy") >= 0
-                    && comment.indexOf("please") >= 0) {
-                    response.end("command accepted");
-                    const context = handler.getIssueCommentCreationContext(request, application, operator);
-                    exports.commands.push({ command: application.commentDeploy.command, context });
-                    yield onCommandsUpdated();
-                    yield handler.createComment("it may take a few minutes to finish it.", context);
-                    yield runCommands();
+                for (const commentAction of exports.commentActions) {
+                    if (commentAction.filter(comment)) {
+                        response.end("command accepted");
+                        const context = handler.getIssueCommentCreationContext(request, application, operator);
+                        const command = yield commentAction.getCommand(application, request);
+                        exports.commands.push({ command, context });
+                        yield onCommandsUpdated();
+                        yield handler.createComment("it may take a few minutes to finish it.", context);
+                        yield runCommands();
+                        return;
+                    }
                 }
-                else {
-                    response.end("not a command");
-                }
+                response.end("not a command");
             }
             else if (eventName === handler.pullRequestEventName) {
                 response.end("command accepted");
