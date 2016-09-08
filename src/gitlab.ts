@@ -10,7 +10,7 @@ export function createComment(content: string, context: {
     const url = `${gitlabHost}/api/v3/projects/${context.projectId}/merge_requests/${context.mergeRequestId}/notes`;
     return new Promise<void>((resolve, reject) => {
         libs.request({
-            url: url,
+            url,
             method: "post",
             json: true,
             body: {
