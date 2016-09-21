@@ -29,6 +29,9 @@ export const getPort: () => Promise<number> = require("get-port");
 import * as minimist from "minimist";
 export { minimist };
 
+import * as __awaiter__ from "tslib";
+export { __awaiter__ };
+
 /**
  * operators: for github, it's name; for gitlab, it's id, can be found in the html
  */

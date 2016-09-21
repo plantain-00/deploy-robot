@@ -6,7 +6,7 @@ function createComment(content, context) {
     const url = `${gitlabHost}/api/v3/projects/${context.projectId}/merge_requests/${context.mergeRequestId}/notes`;
     return new Promise((resolve, reject) => {
         libs.request({
-            url: url,
+            url,
             method: "post",
             json: true,
             body: {

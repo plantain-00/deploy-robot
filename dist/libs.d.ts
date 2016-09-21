@@ -10,6 +10,8 @@ export declare function exec(command: string): Promise<void>;
 export declare const getPort: () => Promise<number>;
 import * as minimist from "minimist";
 export { minimist };
+import * as __awaiter__ from "tslib";
+export { __awaiter__ };
 /**
  * operators: for github, it's name; for gitlab, it's id, can be found in the html
  */

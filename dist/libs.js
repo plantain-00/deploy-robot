@@ -24,4 +24,6 @@ exports.exec = exec;
 exports.getPort = require("get-port");
 const minimist = require("minimist");
 exports.minimist = minimist;
+const __awaiter__ = require("tslib");
+exports.__awaiter__ = __awaiter__;
 //# sourceMappingURL=libs.js.map

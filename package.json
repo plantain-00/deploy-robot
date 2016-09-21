@@ -23,7 +23,8 @@
     "express": "^4.13.4",
     "get-port": "^2.1.0",
     "minimist": "^1.2.0",
-    "request": "^2.72.0"
+    "request": "^2.72.0",
+    "tslib": "^1.0.0"
   },
   "engines": {
     "node": ">=6.0.0"

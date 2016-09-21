@@ -8,7 +8,7 @@ function createComment(content, context) {
     const url = `https://api.github.com/repos/${context.owner}/${context.repo}/issues/${context.issueNumber}/comments`;
     return new Promise((resolve, reject) => {
         libs.request({
-            url: url,
+            url,
             method: "post",
             json: true,
             body: {
