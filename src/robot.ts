@@ -200,11 +200,11 @@ export type Handler = {
     getPullRequestOperator(request: libs.express.Request): string | number;
     getPullRequestId(request: libs.express.Request): number;
     getBranchName(request: libs.express.Request): string;
-}
+};
 
 export type Command = {
     context: any;
     command: string;
-}
+};
 
 export type Ports = { [repositoryName: string]: { [pullRequestId: number]: number } };

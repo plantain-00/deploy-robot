@@ -22,7 +22,7 @@ export function createComment(content: string, context: {
                 body: `@${context.operator}, ${content}`,
             },
             headers: {
-                Authorization: `token ${accessToken}`,
+                "Authorization": `token ${accessToken}`,
                 "User-Agent": "SubsNoti-robot",
             },
         }, (error, incomingMessage, body) => {
