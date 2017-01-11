@@ -24,7 +24,13 @@
         ],
         "no-bitwise": false,
         "arrow-parens": false,
-        "array-type": [true, "array"],
-        "max-classes-per-file": [false]
+        "array-type": [
+            true,
+            "array"
+        ],
+        "max-classes-per-file": [
+            false
+        ],
+        "interface-over-type-literal": false
     }
 }

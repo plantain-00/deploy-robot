@@ -92,7 +92,7 @@ export function start(app: libs.express.Application, path: string, mode: string,
         }
     }
 
-    app.post(path, async (request, response) => {
+    app.post(path, async(request, response) => {
         try {
             const repositoryName = handler.getRepositoryName(request);
             const application = applications.find((value, index, obj) => value.repositoryName === repositoryName);
