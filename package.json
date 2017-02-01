@@ -4,7 +4,7 @@
   "description": "a deploy robot fired by comment",
   "main": "dist/robot.js",
   "scripts": {
-    "tslint": "tslint \"src/*.ts\"",
+    "lint": "tslint \"src/*.ts\"",
     "build": "tsc",
     "start": "node dist/start.js"
   },
@@ -19,8 +19,8 @@
   },
   "homepage": "https://github.com/plantain-00/deploy-robot#readme",
   "dependencies": {
-    "body-parser": "1.15.2",
-    "express": "4.14.0",
+    "body-parser": "1.16.0",
+    "express": "4.14.1",
     "get-port": "2.1.0",
     "minimist": "1.2.0",
     "request": "2.79.0",
@@ -31,11 +31,11 @@
   },
   "devDependencies": {
     "@types/body-parser": "0.0.33",
-    "@types/express": "4.0.34",
+    "@types/express": "4.0.35",
     "@types/minimist": "1.2.0",
     "@types/request": "0.0.39",
-    "tslint": "4.3.1",
-    "typescript": "2.1.4"
+    "tslint": "4.4.2",
+    "typescript": "2.1.5"
   },
   "types": "./dist/robot.d.ts"
 }
