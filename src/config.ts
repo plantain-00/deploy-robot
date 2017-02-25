@@ -12,7 +12,7 @@ export const applications: libs.Application[] = [
         },
         commentDeploy: {
             operators: ["plantain-00"],
-            command: "cd /opt/deploy-robot-demo/ && git pull",
+            command: "/opt/scripts/deploy.sh",
         },
         pullRequest: {
             getTestUrl(port) {
@@ -31,7 +31,7 @@ export const applications: libs.Application[] = [
         },
         commentDeploy: {
             operators: ["plantain-00"],
-            command: "cd /opt/deploy-robot-backend-demo/ && git pull && npm i --production && pm2 restart deploy-robot-backend-demo",
+            command: "/opt/backend_scripts/deploy.sh",
         },
         pullRequest: {
             getTestUrl(port) {

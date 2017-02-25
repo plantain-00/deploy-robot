@@ -45,6 +45,13 @@ Can not set private access token, and can not create comment, for now.
 
 ## demo scripts
 
+#### deploy(frontend)
+
+```bash
+cd /opt/deploy-robot-demo/
+git pull
+```
+
 #### PR opened(frontend)
 
 ```bash
@@ -67,4 +74,45 @@ git pull
 ```bash
 path=/opt/deploy-robot-temp-demo/$1
 rm -rf $path
+```
+
+#### deploy(backend)
+
+```bash
+cd /opt/deploy-robot-backend-demo/
+git pull
+npm i --production --registry=https://registry.npm.taobao.org
+pm2 restart deploy-robot-backend-demo
+```
+
+#### PR opened(backend)
+
+```bash
+path=/opt/deploy-robot-temp-backend-demo/$1
+name=deploy-robot-backend-demo-$1
+mkdir $path
+cd $path
+git clone https://github.com/plantain-00/deploy-robot-backend-demo.git . --depth=1 -b $2
+npm i --production --registry=https://registry.npm.taobao.org
+pm2 start index.js --name="$name" --node-args="--nouse-idle-notification --expose-gc --max-old-space-size=8192" -- -p $1
+```
+
+#### PR updated(backend)
+
+```bash
+path=/opt/deploy-robot-temp-backend-demo/$1
+name=deploy-robot-backend-demo-$1
+cd $path
+git pull
+npm i --production --registry=https://registry.npm.taobao.org
+pm2 restart $name
+```
+
+#### PR merged or closed(backend)
+
+```bash
+path=/opt/deploy-robot-temp-backend-demo/$1
+name=deploy-robot-backend-demo-$1
+rm -rf $path
+pm2 delete $name
 ```
