@@ -117,7 +117,7 @@ export function start(app: libs.express.Application, path: string, mode: string,
                     ports[repositoryName][pullRequestId] = availablePort;
                     await onPortsUpdated();
                     const branchName = handler.getBranchName(request);
-                    context.doneText = `it's done now. you can test it at ${application.pullRequest.testRootUrl}:${availablePort}`;
+                    context.doneText = `it's done now. you can test it at ${application.pullRequest.getTestUrl(availablePort)}`;
                     commands.push({ command: `${application.pullRequest.openedCommand} ${availablePort} ${branchName}`, context });
                 } else if (action === handler.pullRequestUpdateActionName) {
                     const port = ports[repositoryName][pullRequestId];

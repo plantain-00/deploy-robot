@@ -15,7 +15,9 @@ export const applications: libs.Application[] = [
             command: "cd /opt/deploy-robot-demo/ && git pull",
         },
         pullRequest: {
-            testRootUrl: "http://106.15.39.164",
+            getTestUrl(port) {
+                return `http://106.15.39.164:9000/${port}/`;
+            },
             mergedCommand: "/opt/scripts/pr_merged.sh",
             openedCommand: "/opt/scripts/pr_opened.sh",
             closedCommand: "/opt/scripts/pr_closed.sh",

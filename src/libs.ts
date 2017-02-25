@@ -45,7 +45,7 @@ export interface Application {
         command: string;
     };
     pullRequest: {
-        testRootUrl: string;
+        getTestUrl: (port: number) => string;
         mergedCommand: string;
         openedCommand: string;
         closedCommand: string;

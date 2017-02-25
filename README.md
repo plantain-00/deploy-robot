@@ -38,3 +38,14 @@ Can not set private access token, and can not create comment, for now.
 for Github, create an environment variable named `DEPLOY_ROBOT_ACCESS_TOKEN`
 
 for Gitlab, create an environment variable named `DEPLOY_ROBOT_PRIVATE_TOKEN`.
+
+## demo scripts
+
+#### frontend pr opend
+
+```bash
+path=/opt/deploy-robot-temp-demo/$1
+mkdir $path
+cd $path
+git clone https://github.com/plantain-00/deploy-robot-demo.git . --depth=1 -b $2
+```
