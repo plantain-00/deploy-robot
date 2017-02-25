@@ -1,29 +1,13 @@
 import * as libs from "./libs";
 import * as github from "./github";
 import * as gitlab from "./gitlab";
-
-/**
- * the `applications` configurations,
- * you can set `repositoryName`, `secret` and so on.
- */
-export const applications: libs.Application[] = [];
+import { applications, commentActions } from "./config";
 
 /**
  * the mode handlers, there are `github` and `gitlab` handlers inside.
  * you can push other handers in it
  */
 export const handlers: { [modeName: string]: Handler } = { github, gitlab };
-
-export const commentActions: { filter: (comment: string) => boolean; getCommand: (application: libs.Application, request: libs.express.Request) => Promise<string> | string; }[] = [
-    {
-        filter: comment => comment.indexOf("robot") >= 0
-            && comment.indexOf("deploy") >= 0
-            && comment.indexOf("please") >= 0,
-        getCommand: (application, issueCommentCreationContext) => {
-            return application.commentDeploy.command;
-        },
-    },
-];
 
 let handler: Handler;
 export let ports: Ports = {};
@@ -35,30 +19,22 @@ let onPortsUpdated: () => Promise<void> = () => Promise.resolve();
 let isExecuting = false;
 export let commands: Command[] = [];
 let onCommandsUpdated: () => Promise<void> = () => Promise.resolve();
+export const failedCommands: { command: Command, error: Error }[] = [];
 
 async function runCommands() {
     if (!isExecuting) {
         isExecuting = true;
         while (commands.length > 0) {
             console.log(`there are ${commands.length} commands.`);
-            const firstCommand = commands[0];
+            const firstCommand = commands.shift() !;
             try {
                 await libs.exec(firstCommand.command);
-                const newCommands: Command[] = [];
-                for (const c of commands) {
-                    if (c.command === firstCommand.command) {
-                        await handler.createComment(c.context.doneText || "it's done now.", c.context);
-                    } else {
-                        newCommands.push(c);
-                    }
-                }
-
-                commands = newCommands;
+                await handler.createComment(firstCommand.context.doneText || "it's done now.", firstCommand.context);
                 await onCommandsUpdated();
             } catch (error) {
                 console.log(error);
+                failedCommands.push({ command: firstCommand, error });
                 await handler.createComment(error, firstCommand.context);
-                commands = commands.splice(1);
             }
         }
         isExecuting = false;
@@ -73,7 +49,7 @@ export function start(app: libs.express.Application, path: string, mode: string,
 }) {
     handler = handlers[mode];
     if (!handler) {
-        console.log(`mode "${mode}"" is not found in "handlers".`);
+        console.log(`mode "${mode}" is not found in "handlers".`);
         process.exit(1);
     }
 

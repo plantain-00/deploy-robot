@@ -18,8 +18,6 @@ or
 node dist/start.js -m github -p 9996 -h 0.0.0.0
 ```
 
-Then open `http://localhost:9996` in your browser.
-
 ## options
 
 + `-m --mode [mode]`
@@ -37,4 +35,6 @@ Can not set private access token, and can not create comment, for now.
 
 ## secure
 
-for GIthub, create an environment variable named `DEPLOY_ROBOT_ACCESS_TOKEN`, for Gitlab, create an environment variable named `DEPLOY_ROBOT_PRIVATE_TOKEN`.
+for Github, create an environment variable named `DEPLOY_ROBOT_ACCESS_TOKEN`
+
+for Gitlab, create an environment variable named `DEPLOY_ROBOT_PRIVATE_TOKEN`.
