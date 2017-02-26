@@ -68,6 +68,10 @@ export function start(app: libs.express.Application, path: string, mode: string,
         }
     }
 
+    app.get(path, (request, response) => {
+        response.send(JSON.stringify(commands, null, "  "));
+    });
+
     app.post(path, async (request, response) => {
         try {
             const repositoryName = handler.getRepositoryName(request);
