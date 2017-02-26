@@ -47,49 +47,34 @@ Can not set private access token, and can not create comment, for now.
 
 ## demo scripts
 
-#### deploy(frontend)
+#### deploy
 
 ```bash
+# frontend
 cd /opt/deploy-robot-demo/
 git pull
 ```
 
-#### PR opened(frontend)
-
 ```bash
-path=/opt/deploy-robot-temp-demo/$1
-mkdir $path
-cd $path
-git clone https://github.com/plantain-00/deploy-robot-demo.git . --depth=1 -b $2
-```
-
-#### PR updated(frontend)
-
-```bash
-path=/opt/deploy-robot-temp-demo/$1
-cd $path
-git pull
-```
-
-#### PR merged or closed(frontend)
-
-```bash
-path=/opt/deploy-robot-temp-demo/$1
-rm -rf $path
-```
-
-#### deploy(backend)
-
-```bash
+# backend
 cd /opt/deploy-robot-backend-demo/
 git pull
 npm i --production --registry=https://registry.npm.taobao.org
 pm2 restart deploy-robot-backend-demo
 ```
 
-#### PR opened(backend)
+#### PR opened
 
 ```bash
+# frontend
+path=/opt/deploy-robot-temp-demo/$3
+mkdir $path
+cd $path
+git clone https://github.com/plantain-00/deploy-robot-demo.git . --depth=1 -b $2
+```
+
+```bash
+# backend
 path=/opt/deploy-robot-temp-backend-demo/$1
 name=deploy-robot-backend-demo-$1
 mkdir $path
@@ -99,9 +84,23 @@ npm i --production --registry=https://registry.npm.taobao.org
 pm2 start index.js --name="$name" --node-args="--nouse-idle-notification --expose-gc --max-old-space-size=8192" -- -p $1
 ```
 
-#### PR updated(backend)
+parameters | name
+--- | ---
+$1 | available port
+$2 | branch name
+$3 | pull request id
+
+#### PR updated
 
 ```bash
+# frontend
+path=/opt/deploy-robot-temp-demo/$2
+cd $path
+git pull
+```
+
+```bash
+# backend
 path=/opt/deploy-robot-temp-backend-demo/$1
 name=deploy-robot-backend-demo-$1
 cd $path
@@ -110,11 +109,28 @@ npm i --production --registry=https://registry.npm.taobao.org
 pm2 restart $name
 ```
 
-#### PR merged or closed(backend)
+parameters | name
+--- | ---
+$1 | available port
+$2 | pull request id
+
+#### PR merged or closed(frontend)
 
 ```bash
+# frontend
+path=/opt/deploy-robot-temp-demo/$2
+rm -rf $path
+```
+
+```bash
+# backend
 path=/opt/deploy-robot-temp-backend-demo/$1
 name=deploy-robot-backend-demo-$1
 rm -rf $path
 pm2 delete $name
 ```
+
+parameters | name
+--- | ---
+$1 | available port
+$2 | pull request id
