@@ -10,7 +10,18 @@ const app = libs.express();
 app.use(libs.bodyParser.json());
 app.use(libs.bodyParser.urlencoded({ extended: true }));
 
-robot.start(app, "/", mode);
+const dataFilePath = "ports.data";
+function onPortsUpdated() {
+    return libs.writeAsync(dataFilePath, JSON.stringify(robot.ports));
+}
+
+libs.readAsync(dataFilePath).then(data => {
+    const ports: robot.Ports = JSON.parse(data);
+    robot.start(app, "/", mode, { onPortsUpdated, initialPorts: ports });
+}).catch(error => {
+    console.log(error);
+    robot.start(app, "/", mode, { onPortsUpdated });
+});
 
 app.listen(port, host, () => {
     console.log(`deploy robot is running at: ${host}:${port} in mode: ${mode}`);

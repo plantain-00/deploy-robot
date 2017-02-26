@@ -4,7 +4,9 @@
 
 ## demo
 
-https://github.com/plantain-00/deploy-robot-demo/pull/1
+frontend: https://github.com/plantain-00/deploy-robot-demo/pull/1
+
+backend: https://github.com/plantain-00/deploy-robot-backend-demo/pull/1
 
 ## install
 

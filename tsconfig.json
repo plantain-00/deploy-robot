@@ -10,6 +10,7 @@
         "skipLibCheck": true,
         "outDir": "dist",
         "declaration": true,
-        "noEmitHelpers": true
+        "noEmitHelpers": true,
+        "importHelpers": true
     }
 }

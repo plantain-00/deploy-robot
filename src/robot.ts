@@ -41,12 +41,12 @@ async function runCommands() {
     }
 }
 
-export function start(app: libs.express.Application, path: string, mode: string, options?: {
+export function start(app: libs.express.Application, path: string, mode: string, options?: Partial<{
     initialCommands: Command[];
     initialPorts: Ports;
     onCommandsUpdated: () => Promise<void>;
     onPortsUpdated: () => Promise<void>;
-}) {
+}>) {
     handler = handlers[mode];
     if (!handler) {
         console.log(`mode "${mode}" is not found in "handlers".`);
@@ -117,7 +117,7 @@ export function start(app: libs.express.Application, path: string, mode: string,
                     ports[repositoryName][pullRequestId] = availablePort;
                     await onPortsUpdated();
                     const branchName = handler.getBranchName(request);
-                    context.doneText = `it's done now. you can test it at ${application.pullRequest.getTestUrl(availablePort)}`;
+                    context.doneText = `the test application is created now, you can test it at ${application.pullRequest.getTestUrl(availablePort)}`;
                     commands.push({ command: `${application.pullRequest.openedCommand} ${availablePort} ${branchName}`, context });
                 } else if (action === handler.pullRequestUpdateActionName) {
                     const port = ports[repositoryName][pullRequestId];
@@ -125,6 +125,7 @@ export function start(app: libs.express.Application, path: string, mode: string,
                         response.end(`no pull request: ${pullRequestId}.`);
                         return;
                     }
+                    context.doneText = "the test application is updated now, the test url is still available";
                     commands.push({ command: `${application.pullRequest.updatedCommand} ${port}`, context });
                 } else if (handler.isPullRequestMerged) {
                     const port = ports[repositoryName][pullRequestId];
@@ -132,6 +133,7 @@ export function start(app: libs.express.Application, path: string, mode: string,
                         response.end(`no pull request: ${pullRequestId}.`);
                         return;
                     }
+                    context.doneText = "the test application is destroyed and not available now";
                     commands.push({ command: `${application.pullRequest.mergedCommand} ${port}`, context });
                 } else if (handler.isPullRequestClosed) {
                     const port = ports[repositoryName][pullRequestId];
@@ -139,6 +141,7 @@ export function start(app: libs.express.Application, path: string, mode: string,
                         response.end(`no pull request: ${pullRequestId}.`);
                         return;
                     }
+                    context.doneText = "the test application is destroyed and not available now";
                     commands.push({ command: `${application.pullRequest.closedCommand} ${port}`, context });
                 } else {
                     response.end(`can not handle action: ${action}.`);
