@@ -59,7 +59,7 @@ export interface Application {
         command: string;
     };
     pullRequest: {
-        getTestUrl: (port: number) => string;
+        getTestUrl: (port: number, pullRequestId: number) => string;
         mergedCommand: string;
         openedCommand: string;
         closedCommand: string;

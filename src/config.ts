@@ -15,8 +15,8 @@ export const applications: libs.Application[] = [
             command: "/opt/scripts/deploy.sh",
         },
         pullRequest: {
-            getTestUrl(port) {
-                return `http://106.15.39.164:9000/${port}/`;
+            getTestUrl(port, pullRequestId) {
+                return `http://106.15.39.164:9000/${pullRequestId}/`;
             },
             mergedCommand: "/opt/scripts/pr_merged.sh",
             openedCommand: "/opt/scripts/pr_opened.sh",
@@ -34,7 +34,7 @@ export const applications: libs.Application[] = [
             command: "/opt/backend_scripts/deploy.sh",
         },
         pullRequest: {
-            getTestUrl(port) {
+            getTestUrl(port, pullRequestId) {
                 return `http://106.15.39.164:${port}/api/`;
             },
             mergedCommand: "/opt/backend_scripts/pr_merged.sh",
