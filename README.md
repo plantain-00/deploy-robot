@@ -114,7 +114,7 @@ parameters | name
 $1 | available port
 $2 | pull request id
 
-#### PR merged or closed(frontend)
+#### PR merged or closed
 
 ```bash
 # frontend

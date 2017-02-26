@@ -55,3 +55,5 @@ export const commentActions: { filter: (comment: string) => boolean; getCommand:
         },
     },
 ];
+
+export const localeName = "zh-cn";

@@ -1,7 +1,10 @@
 import * as libs from "./libs";
 import * as github from "./github";
 import * as gitlab from "./gitlab";
-import { applications, commentActions } from "./config";
+import { applications, commentActions, localeName } from "./config";
+import { getLocale } from "./locale";
+
+const locale = getLocale(localeName);
 
 /**
  * the mode handlers, there are `github` and `gitlab` handlers inside.
@@ -25,11 +28,10 @@ async function runCommands() {
     if (!isExecuting) {
         isExecuting = true;
         while (commands.length > 0) {
-            console.log(`there are ${commands.length} commands.`);
             const firstCommand = commands.shift() !;
             try {
                 await libs.exec(firstCommand.command);
-                await handler.createComment(firstCommand.context.doneText || "it's done now.", firstCommand.context);
+                await handler.createComment(firstCommand.context.doneText || locale.defaultDone, firstCommand.context);
                 await onCommandsUpdated();
             } catch (error) {
                 console.log(error);
@@ -69,7 +71,7 @@ export function start(app: libs.express.Application, path: string, mode: string,
     }
 
     app.get(path, (request, response) => {
-        response.send(JSON.stringify(commands, null, "  "));
+        response.send(JSON.stringify({ commands, ports }, null, "  "));
     });
 
     app.post(path, async (request, response) => {
@@ -104,7 +106,7 @@ export function start(app: libs.express.Application, path: string, mode: string,
                         const command = await commentAction.getCommand(application, request);
                         commands.push({ command, context });
                         await onCommandsUpdated();
-                        await handler.createComment("it may take a few minutes to finish it.", context);
+                        await handler.createComment(locale.justGot, context);
                         await runCommands();
                         return;
                     }
@@ -121,7 +123,7 @@ export function start(app: libs.express.Application, path: string, mode: string,
                     ports[repositoryName][pullRequestId] = availablePort;
                     await onPortsUpdated();
                     const branchName = handler.getBranchName(request);
-                    context.doneText = `the test application is created now, you can test it at ${application.pullRequest.getTestUrl(availablePort, pullRequestId)}`;
+                    context.doneText = locale.pullRequestOpenedDone.replace("{0}", application.pullRequest.getTestUrl(availablePort, pullRequestId));
                     commands.push({ command: `${application.pullRequest.openedCommand} ${availablePort} ${branchName} ${pullRequestId}`, context });
                 } else if (action === handler.pullRequestUpdateActionName) {
                     const port = ports[repositoryName][pullRequestId];
@@ -129,7 +131,7 @@ export function start(app: libs.express.Application, path: string, mode: string,
                         response.end(`no pull request: ${pullRequestId}.`);
                         return;
                     }
-                    context.doneText = "the test application is updated now, the test url is still available";
+                    context.doneText = locale.pullRequestUpdatedDone;
                     commands.push({ command: `${application.pullRequest.updatedCommand} ${port} ${pullRequestId}`, context });
                 } else if (handler.isPullRequestMerged) {
                     const port = ports[repositoryName][pullRequestId];
@@ -137,7 +139,7 @@ export function start(app: libs.express.Application, path: string, mode: string,
                         response.end(`no pull request: ${pullRequestId}.`);
                         return;
                     }
-                    context.doneText = "the test application is destroyed and not available now";
+                    context.doneText = locale.pullRequestMergedDone;
                     commands.push({ command: `${application.pullRequest.mergedCommand} ${port} ${pullRequestId}`, context });
                 } else if (handler.isPullRequestClosed) {
                     const port = ports[repositoryName][pullRequestId];
@@ -145,14 +147,14 @@ export function start(app: libs.express.Application, path: string, mode: string,
                         response.end(`no pull request: ${pullRequestId}.`);
                         return;
                     }
-                    context.doneText = "the test application is destroyed and not available now";
+                    context.doneText = locale.pullRequestMergedDone;
                     commands.push({ command: `${application.pullRequest.closedCommand} ${port} ${pullRequestId}`, context });
                 } else {
                     response.end(`can not handle action: ${action}.`);
                     return;
                 }
                 await onCommandsUpdated();
-                await handler.createComment("it may take a few minutes to finish it.", context);
+                await handler.createComment(locale.justGot, context);
                 await runCommands();
             } else {
                 response.end(`can not handle event: ${eventName}.`);
