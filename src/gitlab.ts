@@ -3,10 +3,13 @@ import * as libs from "./libs";
 const gitlabHost = "https://gitlab.com";
 const privateToken: string = process.env.DEPLOY_ROBOT_PRIVATE_TOKEN;
 
-export function createComment(content: string, context: {
+export interface Context {
     projectId: number;
     mergeRequestId: number;
-}) {
+    author: string | number;
+};
+
+export function createComment(content: string, context: Context) {
     const url = `${gitlabHost}/api/v3/projects/${context.projectId}/merge_requests/${context.mergeRequestId}/notes`;
     return new Promise<void>((resolve, reject) => {
         libs.request({
@@ -14,7 +17,7 @@ export function createComment(content: string, context: {
             method: "post",
             json: true,
             body: {
-                body: content,
+                body: `@${context.author}, ${content}`,
             },
             headers: {
                 "PRIVATE-TOKEN": privateToken,
@@ -37,39 +40,41 @@ export function getRepositoryName(request: libs.express.Request): string {
 
 export function verifySignature(request: libs.express.Request, application: libs.Application) {
     const token = request.header("X-Gitlab-Token");
-    return token === application.robot.secret;
+    return token === application.hookSecret;
 }
 
 export function getEventName(request: libs.express.Request) {
     return request.header("X-Gitlab-Event");
 }
 
-export const issueCommentEventName = "Note Hook";
+export const commentEventName = "Note Hook";
 export const pullRequestEventName = "Merge Request Hook";
 
-export function getIssueCommentOperator(request: libs.express.Request): string | number {
+export function getCommentAuthor(request: libs.express.Request): string | number {
     return request.body.object_attributes.author_id;
 }
 
-export function getPullRequestOperator(request: libs.express.Request): string | number {
+export function getPullRequestAuthor(request: libs.express.Request): string | number {
     return request.body.object_attributes.author_id;
 }
 
-export function getIssueComment(request: libs.express.Request): string {
+export function getComment(request: libs.express.Request): string {
     return request.body.object_attributes.note;
 }
 
-export function getIssueCommentCreationContext(request: libs.express.Request, application: libs.Application, operator: string | number): any {
+export function getCommentCreationContext(request: libs.express.Request, application: libs.Application): Context {
     return {
         projectId: request.body.project_id,
         mergeRequestId: request.body.merge_request.id,
+        author: getCommentAuthor(request),
     };
 }
 
-export function getPullRequestCommentCreationContext(request: libs.express.Request, application: libs.Application, operator: string | number): any {
+export function getPullRequestCommentCreationContext(request: libs.express.Request, application: libs.Application): Context {
     return {
         projectId: request.body.project_id,
         mergeRequestId: request.body.merge_request.id,
+        author: getPullRequestAuthor(request),
     };
 }
 

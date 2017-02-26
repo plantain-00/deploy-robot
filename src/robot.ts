@@ -1,7 +1,7 @@
 import * as libs from "./libs";
 import * as github from "./github";
 import * as gitlab from "./gitlab";
-import { applications, commentActions, localeName } from "./config";
+import { applications, localeName } from "./config";
 import { getLocale } from "./locale";
 
 const locale = getLocale(localeName);
@@ -31,7 +31,7 @@ async function runCommands() {
             const firstCommand = commands.shift() !;
             try {
                 await libs.exec(firstCommand.command);
-                await handler.createComment(firstCommand.context.doneText, firstCommand.context);
+                await handler.createComment(firstCommand.context.doneText!, firstCommand.context);
                 await onCommandsUpdated();
             } catch (error) {
                 console.log(error);
@@ -92,19 +92,14 @@ export function start(app: libs.express.Application, path: string, mode: string,
                 return;
             }
             const eventName = handler.getEventName(request);
-            if (eventName === handler.issueCommentEventName) {
-                const operator = handler.getIssueCommentOperator(request);
-                if (application.commentDeploy.operators.findIndex(value => value === operator) < 0) {
-                    response.end("not valid operator");
-                    return;
-                }
-                const comment = handler.getIssueComment(request);
-                for (const commentAction of commentActions) {
-                    if (commentAction.filter(comment)) {
+            if (eventName === handler.commentEventName) {
+                const author = handler.getCommentAuthor(request);
+                const comment = handler.getComment(request);
+                for (const commentAction of application.commentActions) {
+                    if (commentAction.filter(comment, author)) {
                         response.end("command accepted");
-                        const context = handler.getIssueCommentCreationContext(request, application, operator);
-                        const command = await commentAction.getCommand(application, request);
-                        commands.push({ command, context });
+                        const context = handler.getCommentCreationContext(request, application);
+                        commands.push({ command: commentAction.command, context });
                         await onCommandsUpdated();
                         context.doneText = commentAction.doneMessage;
                         await handler.createComment(commentAction.gotMessage, context);
@@ -116,9 +111,8 @@ export function start(app: libs.express.Application, path: string, mode: string,
             } else if (eventName === handler.pullRequestEventName) {
                 response.end("command accepted");
                 const action = handler.getPullRequestAction(request);
-                const operator = handler.getPullRequestOperator(request);
                 const pullRequestId = handler.getPullRequestId(request);
-                const context = handler.getPullRequestCommentCreationContext(request, application, operator);
+                const context = handler.getPullRequestCommentCreationContext(request, application);
                 if (action === handler.pullRequestOpenActionName) {
                     const availablePort = await libs.getPort();
                     ports[repositoryName][pullRequestId] = availablePort;
@@ -171,28 +165,30 @@ export function start(app: libs.express.Application, path: string, mode: string,
 }
 
 export type Handler = {
-    issueCommentEventName: string;
+    commentEventName: string;
     pullRequestEventName: string;
     pullRequestOpenActionName: string;
     pullRequestUpdateActionName: string;
     getRepositoryName(request: libs.express.Request): string;
     verifySignature(request: libs.express.Request, application: libs.Application): boolean;
     getEventName(request: libs.express.Request): string;
-    getIssueCommentOperator(request: libs.express.Request): string | number;
-    getIssueComment(request: libs.express.Request): string;
-    getIssueCommentCreationContext(request: libs.express.Request, application: libs.Application, operator: string | number): any;
-    getPullRequestCommentCreationContext(request: libs.express.Request, application: libs.Application, operator: string | number): any;
+    getCommentAuthor(request: libs.express.Request): string | number;
+    getComment(request: libs.express.Request): string;
+    getCommentCreationContext(request: libs.express.Request, application: libs.Application): Context;
+    getPullRequestCommentCreationContext(request: libs.express.Request, application: libs.Application): Context;
     getPullRequestAction(request: libs.express.Request): string;
     isPullRequestMerged(request: libs.express.Request, action: string): boolean;
     isPullRequestClosed(request: libs.express.Request, action: string): boolean;
-    createComment(content: string, context: any): Promise<void>;
-    getPullRequestOperator(request: libs.express.Request): string | number;
+    createComment(content: string, context: Context): Promise<void>;
+    getPullRequestAuthor(request: libs.express.Request): string | number;
     getPullRequestId(request: libs.express.Request): number;
     getBranchName(request: libs.express.Request): string;
 };
 
+export type Context = (github.Context | gitlab.Context) & { doneText?: string };
+
 export type Command = {
-    context: any;
+    context: Context;
     command: string;
 };
 

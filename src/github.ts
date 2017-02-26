@@ -2,16 +2,18 @@ import * as libs from "./libs";
 
 const accessToken: string = process.env.DEPLOY_ROBOT_ACCESS_TOKEN;
 
+export interface Context {
+    owner: string;
+    repo: string;
+    issueNumber: number;
+    author: string | number;
+};
+
 function getSignature(body: string, secret: string) {
     return "sha1=" + libs.crypto.createHmac("sha1", secret).update(body).digest("hex");
 }
 
-export function createComment(content: string, context: {
-    owner: string;
-    repo: string;
-    issueNumber: number;
-    operator: string;
-}) {
+export function createComment(content: string, context: Context) {
     const url = `https://api.github.com/repos/${context.owner}/${context.repo}/issues/${context.issueNumber}/comments`;
     return new Promise<void>((resolve, reject) => {
         libs.request({
@@ -19,7 +21,7 @@ export function createComment(content: string, context: {
             method: "post",
             json: true,
             body: {
-                body: `@${context.operator}, ${content}`,
+                body: `@${context.author}, ${content}`,
             },
             headers: {
                 "Authorization": `token ${accessToken}`,
@@ -43,7 +45,7 @@ export function getRepositoryName(request: libs.express.Request): string {
 
 export function verifySignature(request: libs.express.Request, application: libs.Application) {
     const remoteSignature: string = request.header("X-Hub-Signature");
-    const signature = getSignature(JSON.stringify(request.body), application.robot.secret);
+    const signature = getSignature(JSON.stringify(request.body), application.hookSecret);
     return signature === remoteSignature;
 }
 
@@ -51,36 +53,36 @@ export function getEventName(request: libs.express.Request) {
     return request.header("X-GitHub-Event");
 }
 
-export const issueCommentEventName = "issue_comment";
+export const commentEventName = "issue_comment";
 export const pullRequestEventName = "pull_request";
 
-export function getIssueCommentOperator(request: libs.express.Request): string | number {
+export function getCommentAuthor(request: libs.express.Request): string | number {
     return request.body.comment.user.login;
 }
 
-export function getPullRequestOperator(request: libs.express.Request): string | number {
+export function getPullRequestAuthor(request: libs.express.Request): string | number {
     return request.body.pull_request.user.login;
 }
 
-export function getIssueComment(request: libs.express.Request): string {
+export function getComment(request: libs.express.Request): string {
     return request.body.comment.body;
 }
 
-export function getIssueCommentCreationContext(request: libs.express.Request, application: libs.Application, operator: string | number): any {
+export function getCommentCreationContext(request: libs.express.Request, application: libs.Application): Context {
     return {
         owner: request.body.repository.owner.login,
         repo: application.repositoryName,
         issueNumber: request.body.issue.number,
-        operator,
+        author: getCommentAuthor(request),
     };
 }
 
-export function getPullRequestCommentCreationContext(request: libs.express.Request, application: libs.Application, operator: string | number): any {
+export function getPullRequestCommentCreationContext(request: libs.express.Request, application: libs.Application): Context {
     return {
         owner: request.body.repository.owner.login,
         repo: application.repositoryName,
         issueNumber: request.body.pull_request.number,
-        operator,
+        author: getPullRequestAuthor(request),
     };
 }
 

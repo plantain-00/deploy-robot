@@ -9,7 +9,8 @@
 + when a pull/merge request is merged or closed, destroy the test application
 + the applications can be frontend or backend applications
 + when someone comments "robot, deploy this please." on a pull/merge request, the normal application will be updated
-+ multiple language tips
++ multiple language
++ when someone comments, execute custom scripts
 
 ## demo
 
@@ -17,44 +18,39 @@ frontend: https://github.com/plantain-00/deploy-robot-demo/pull/1
 
 backend: https://github.com/plantain-00/deploy-robot-backend-demo/pull/1
 
-## install
+## step 1. install
 
-```bash
-git clone -b release https://github.com/plantain-00/deploy-robot.git . --depth=1 && npm i --production
-```
+`git clone -b release https://github.com/plantain-00/deploy-robot.git . --depth=1 && npm i --production`
 
-```bash
-node dist/start.js
-```
+## step 2. add web hook in Github or Gitlab
 
-or
+Add a web hook for the repository, the trigger events should include pull/merge request and comments of pull/merge request
 
-```bash
-node dist/start.js -m github -p 9996 -h 0.0.0.0
-```
+## step 3. create a robot account in Github or Gitlab
 
-## options
+Create a robot account, and create a private access token for the account
 
-+ `-m --mode [mode]`
-+ `-p --port [port]`
-+ `-h --host [host]`
+For Github, create an environment variable named `DEPLOY_ROBOT_ACCESS_TOKEN`
 
-## In Github, Gitlab
+For Gitlab, create an environment variable named `DEPLOY_ROBOT_PRIVATE_TOKEN`
 
-1. Add a web hook for the repository, the trigger events should include pull/merge request and comments of pull/merge request
-2. Create a robot account, and create a private access token for the account
+## step 4. update your config file
 
-## secure
+update your configuration at: `dist/config.js`.
 
-for Github, create an environment variable named `DEPLOY_ROBOT_ACCESS_TOKEN`
+name | description
+--- | ---
+localeName | multiple language name
+repositoryName | repository name
+hookSecret | the secret string you got from step 2
+getTestUrl | your test environment url rule
+mergedCommand/openedCommand/closedCommand/updatedCommand | the scripts executed when a pull/merge request is merged/opened/closed/updated, see step 5
+filter | whether the comment will trigger the comment action
+command | the script executed when a comment triggers the comment action, see step 5
+gotMessage | the message when your service got the payload
+doneMessage | the message when you have done to execute the script
 
-for Gitlab, create an environment variable named `DEPLOY_ROBOT_PRIVATE_TOKEN`.
-
-## Why no bitbucket or gogs?
-
-Can not set private access token, and can not create comment, for now.
-
-## demo scripts
+## step 5. update your scripts
 
 #### deploy
 
@@ -143,3 +139,25 @@ parameters | name
 --- | ---
 $1 | available port
 $2 | pull request id
+
+## step 6. run
+
+```bash
+node dist/start.js
+```
+
+or
+
+```bash
+node dist/start.js -m github -p 9996 -h 0.0.0.0
+```
+
++ `-m --mode [mode]`
++ `-p --port [port]`
++ `-h --host [host]`
+
+then open http://localhost:9996 in your browser.
+
+## Why no bitbucket or gogs?
+
+Can not set private access token, and can not create comment, for now.

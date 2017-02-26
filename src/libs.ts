@@ -51,13 +51,7 @@ export function writeAsync(filename: string, data: string) {
  */
 export interface Application {
     repositoryName: string;
-    robot: {
-        secret: string;
-    };
-    commentDeploy: {
-        operators: (string | number)[];
-        command: string;
-    };
+    hookSecret: string;
     pullRequest: {
         getTestUrl: (port: number, pullRequestId: number) => string;
         mergedCommand: string;
@@ -65,11 +59,10 @@ export interface Application {
         closedCommand: string;
         updatedCommand: string;
     };
-}
-
-export interface CommentAction {
-    filter: (comment: string) => boolean;
-    getCommand: (application: Application, request: express.Request) => Promise<string> | string;
-    gotMessage: string;
-    doneMessage: string;
+    commentActions: {
+        filter: (comment: string, author: string | number) => boolean;
+        command: string;
+        gotMessage: string;
+        doneMessage: string;
+    }[];
 }
