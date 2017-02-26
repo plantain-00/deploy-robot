@@ -31,7 +31,7 @@ async function runCommands() {
             const firstCommand = commands.shift() !;
             try {
                 await libs.exec(firstCommand.command);
-                await handler.createComment(firstCommand.context.doneText || locale.defaultDone, firstCommand.context);
+                await handler.createComment(firstCommand.context.doneText, firstCommand.context);
                 await onCommandsUpdated();
             } catch (error) {
                 console.log(error);
@@ -71,7 +71,7 @@ export function start(app: libs.express.Application, path: string, mode: string,
     }
 
     app.get(path, (request, response) => {
-        response.send(JSON.stringify({ commands, ports }, null, "  "));
+        response.send(`<pre>${JSON.stringify({ commands, ports }, null, "  ")}</pre>`);
     });
 
     app.post(path, async (request, response) => {
@@ -106,7 +106,8 @@ export function start(app: libs.express.Application, path: string, mode: string,
                         const command = await commentAction.getCommand(application, request);
                         commands.push({ command, context });
                         await onCommandsUpdated();
-                        await handler.createComment(locale.justGot, context);
+                        context.doneText = commentAction.doneMessage;
+                        await handler.createComment(commentAction.gotMessage, context);
                         await runCommands();
                         return;
                     }
@@ -123,6 +124,7 @@ export function start(app: libs.express.Application, path: string, mode: string,
                     ports[repositoryName][pullRequestId] = availablePort;
                     await onPortsUpdated();
                     const branchName = handler.getBranchName(request);
+                    await handler.createComment(locale.pullRequestOpenedGot, context);
                     context.doneText = locale.pullRequestOpenedDone.replace("{0}", application.pullRequest.getTestUrl(availablePort, pullRequestId));
                     commands.push({ command: `${application.pullRequest.openedCommand} ${availablePort} ${branchName} ${pullRequestId}`, context });
                 } else if (action === handler.pullRequestUpdateActionName) {
@@ -131,6 +133,7 @@ export function start(app: libs.express.Application, path: string, mode: string,
                         response.end(`no pull request: ${pullRequestId}.`);
                         return;
                     }
+                    await handler.createComment(locale.pullRequestUpdatedGot, context);
                     context.doneText = locale.pullRequestUpdatedDone;
                     commands.push({ command: `${application.pullRequest.updatedCommand} ${port} ${pullRequestId}`, context });
                 } else if (handler.isPullRequestMerged) {
@@ -139,6 +142,7 @@ export function start(app: libs.express.Application, path: string, mode: string,
                         response.end(`no pull request: ${pullRequestId}.`);
                         return;
                     }
+                    await handler.createComment(locale.pullRequestMergedGot, context);
                     context.doneText = locale.pullRequestMergedDone;
                     commands.push({ command: `${application.pullRequest.mergedCommand} ${port} ${pullRequestId}`, context });
                 } else if (handler.isPullRequestClosed) {
@@ -147,14 +151,14 @@ export function start(app: libs.express.Application, path: string, mode: string,
                         response.end(`no pull request: ${pullRequestId}.`);
                         return;
                     }
-                    context.doneText = locale.pullRequestMergedDone;
+                    await handler.createComment(locale.pullRequestClosedGot, context);
+                    context.doneText = locale.pullRequestClosedDone;
                     commands.push({ command: `${application.pullRequest.closedCommand} ${port} ${pullRequestId}`, context });
                 } else {
                     response.end(`can not handle action: ${action}.`);
                     return;
                 }
                 await onCommandsUpdated();
-                await handler.createComment(locale.justGot, context);
                 await runCommands();
             } else {
                 response.end(`can not handle event: ${eventName}.`);

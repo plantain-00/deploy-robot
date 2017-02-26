@@ -45,7 +45,7 @@ export const applications: libs.Application[] = [
     },
 ];
 
-export const commentActions: { filter: (comment: string) => boolean; getCommand: (application: libs.Application, request: libs.express.Request) => Promise<string> | string; }[] = [
+export const commentActions: libs.CommentAction[] = [
     {
         filter: comment => comment.indexOf("robot") >= 0
             && comment.indexOf("deploy") >= 0
@@ -53,6 +53,8 @@ export const commentActions: { filter: (comment: string) => boolean; getCommand:
         getCommand: (application, issueCommentCreationContext) => {
             return application.commentDeploy.command;
         },
+        gotMessage: "正在部署...",
+        doneMessage: "部署已完成。",
     },
 ];
 

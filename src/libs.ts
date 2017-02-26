@@ -66,3 +66,10 @@ export interface Application {
         updatedCommand: string;
     };
 }
+
+export interface CommentAction {
+    filter: (comment: string) => boolean;
+    getCommand: (application: Application, request: express.Request) => Promise<string> | string;
+    gotMessage: string;
+    doneMessage: string;
+}

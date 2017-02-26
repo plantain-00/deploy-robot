@@ -2,6 +2,14 @@
 [![devDependency Status](https://david-dm.org/plantain-00/deploy-robot/dev-status.svg)](https://david-dm.org/plantain-00/deploy-robot#info=devDependencies)
 [![Build Status](https://travis-ci.org/plantain-00/deploy-robot.svg?branch=master)](https://travis-ci.org/plantain-00/deploy-robot)
 
+## features
+
++ when a pull/merge request is created, create a test application
++ when a pull/merge request is updated, update the created test application
++ when a pull/merge request is merged or closed, destroy the test application
++ the applications can be frontend or backend applications
++ when some operators comment "robot, deploy this please." on a pull/merge request, the normal application will be updated
+
 ## demo
 
 frontend: https://github.com/plantain-00/deploy-robot-demo/pull/1
