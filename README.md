@@ -9,6 +9,7 @@
 + when a pull/merge request is merged or closed, destroy the test application
 + the applications can be frontend or backend applications
 + when someone comments "robot, deploy this please." on a pull/merge request, the normal application will be updated
++ multiple language tips
 
 ## demo
 
