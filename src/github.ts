@@ -114,3 +114,7 @@ export function getPullRequestId(request: libs.express.Request): number {
 export function getBranchName(request: libs.express.Request): string {
     return request.body.pull_request.head.ref;
 }
+
+export function getHeadRepositoryCloneUrl(request: libs.express.Request): string {
+    return request.body.pull_request.head.repo.clone_url;
+}

@@ -100,3 +100,7 @@ export function getPullRequestId(request: libs.express.Request): number {
 export function getBranchName(request: libs.express.Request): string {
     return request.body.object_attributes.source_branch;
 }
+
+export function getHeadRepositoryCloneUrl(request: libs.express.Request): string {
+    return request.body.object_attributes.source.git_http_url;
+}

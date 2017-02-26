@@ -75,7 +75,7 @@ pm2 restart deploy-robot-backend-demo
 path=/opt/deploy-robot-temp-demo/$3
 mkdir $path
 cd $path
-git clone https://github.com/plantain-00/deploy-robot-demo.git . --depth=1 -b $2
+git clone $4 . --depth=1 -b $2
 ```
 
 ```bash
@@ -84,7 +84,7 @@ path=/opt/deploy-robot-temp-backend-demo/$1
 name=deploy-robot-backend-demo-$1
 mkdir $path
 cd $path
-git clone https://github.com/plantain-00/deploy-robot-backend-demo.git . --depth=1 -b $2
+git clone $4 . --depth=1 -b $2
 npm i --production --registry=https://registry.npm.taobao.org
 pm2 start index.js --name="$name" --node-args="--nouse-idle-notification --expose-gc --max-old-space-size=8192" -- -p $1
 ```
@@ -94,6 +94,7 @@ parameters | name
 $1 | available port
 $2 | branch name
 $3 | pull request id
+$4 | clone url
 
 #### PR updated
 

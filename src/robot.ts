@@ -118,9 +118,10 @@ export function start(app: libs.express.Application, path: string, mode: string,
                     ports[repositoryName][pullRequestId] = availablePort;
                     await onPortsUpdated();
                     const branchName = handler.getBranchName(request);
+                    const cloneUrl = handler.getHeadRepositoryCloneUrl(request);
                     await handler.createComment(locale.pullRequestOpenedGot, context);
                     context.doneText = locale.pullRequestOpenedDone.replace("{0}", application.pullRequest.getTestUrl(availablePort, pullRequestId));
-                    commands.push({ command: `${application.pullRequest.openedCommand} ${availablePort} ${branchName} ${pullRequestId}`, context });
+                    commands.push({ command: `${application.pullRequest.openedCommand} ${availablePort} ${branchName} ${pullRequestId} ${cloneUrl}`, context });
                 } else if (action === handler.pullRequestUpdateActionName) {
                     const port = ports[repositoryName][pullRequestId];
                     if (!port) {
@@ -183,6 +184,7 @@ export type Handler = {
     getPullRequestAuthor(request: libs.express.Request): string | number;
     getPullRequestId(request: libs.express.Request): number;
     getBranchName(request: libs.express.Request): string;
+    getHeadRepositoryCloneUrl(request: libs.express.Request): string;
 };
 
 export type Context = (github.Context | gitlab.Context) & { doneText?: string };
