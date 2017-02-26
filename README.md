@@ -8,7 +8,7 @@
 + when a pull/merge request is updated, update the created test application
 + when a pull/merge request is merged or closed, destroy the test application
 + the applications can be frontend or backend applications
-+ when some operators comment "robot, deploy this please." on a pull/merge request, the normal application will be updated
++ when someone comments "robot, deploy this please." on a pull/merge request, the normal application will be updated
 
 ## demo
 
@@ -40,7 +40,7 @@ node dist/start.js -m github -p 9996 -h 0.0.0.0
 
 ## In Github, Gitlab
 
-1. Add a web hook for the repository, the trigger events should include comments of pull/merge request
+1. Add a web hook for the repository, the trigger events should include pull/merge request and comments of pull/merge request
 2. Create a robot account, and create a private access token for the account
 
 ## secure
