@@ -7,7 +7,7 @@ export interface Context {
     repo: string;
     issueNumber: number;
     author: string | number;
-};
+}
 
 function getSignature(body: string, secret: string) {
     return "sha1=" + libs.crypto.createHmac("sha1", secret).update(body).digest("hex");

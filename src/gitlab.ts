@@ -7,7 +7,7 @@ export interface Context {
     projectId: number;
     mergeRequestId: number;
     author: string | number;
-};
+}
 
 export function createComment(content: string, context: Context) {
     const url = `${gitlabHost}/api/v3/projects/${context.projectId}/merge_requests/${context.mergeRequestId}/notes`;
