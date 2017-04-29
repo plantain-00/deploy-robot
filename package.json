@@ -5,8 +5,9 @@
   "main": "dist/robot.js",
   "scripts": {
     "lint": "tslint \"src/*.ts\"",
-    "build": "tsc",
-    "start": "node dist/start.js"
+    "build": "npm run clean && tsc -p src",
+    "start": "node dist/start.js",
+    "clean": "rimraf dist"
   },
   "repository": {
     "type": "git",
@@ -34,8 +35,9 @@
     "@types/express": "4.0.35",
     "@types/minimist": "1.2.0",
     "@types/request": "0.0.42",
+    "rimraf": "2.6.1",
     "tslint": "5.0.0",
-    "typescript": "2.2.2"
+    "typescript": "2.3.2"
   },
   "types": "./dist/robot.d.ts"
 }
