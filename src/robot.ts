@@ -34,6 +34,7 @@ async function runCommands() {
                 await handler.createComment(firstCommand.context.doneText!, firstCommand.context);
                 await onCommandsUpdated();
             } catch (error) {
+                // tslint:disable-next-line:no-console
                 console.log(error);
                 failedCommands.push({ command: firstCommand, error });
                 await handler.createComment(error, firstCommand.context);
@@ -51,6 +52,7 @@ export function start(app: libs.express.Application, path: string, mode: string,
 }>) {
     handler = handlers[mode];
     if (!handler) {
+        // tslint:disable-next-line:no-console
         console.log(`mode "${mode}" is not found in "handlers".`);
         process.exit(1);
     }
@@ -159,6 +161,7 @@ export function start(app: libs.express.Application, path: string, mode: string,
                 response.end(`can not handle event: ${eventName}.`);
             }
         } catch (error) {
+            // tslint:disable-next-line:no-console
             console.log(error);
             response.end(error.toString());
         }

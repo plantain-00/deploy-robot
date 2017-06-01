@@ -3,11 +3,11 @@ import * as libs from "./libs";
 const gitlabHost = "https://gitlab.com";
 const privateToken: string = process.env.DEPLOY_ROBOT_PRIVATE_TOKEN;
 
-export interface Context {
+export type Context = {
     projectId: number;
     mergeRequestId: number;
     author: string | number;
-}
+};
 
 export function createComment(content: string, context: Context) {
     const url = `${gitlabHost}/api/v3/projects/${context.projectId}/merge_requests/${context.mergeRequestId}/notes`;
@@ -24,8 +24,10 @@ export function createComment(content: string, context: Context) {
             },
         }, (error, incomingMessage, body) => {
             if (error) {
+                // tslint:disable-next-line:no-console
                 console.log(error);
             } else if (incomingMessage.statusCode !== 201) {
+                // tslint:disable-next-line:no-console
                 console.log(body);
             }
 

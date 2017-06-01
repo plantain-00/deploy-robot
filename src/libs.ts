@@ -20,6 +20,7 @@ export function exec(command: string) {
     });
 }
 
+// tslint:disable-next-line:no-var-requires
 export const getPort: () => Promise<number> = require("get-port");
 
 export function readAsync(filename: string) {
@@ -49,7 +50,7 @@ export function writeAsync(filename: string, data: string) {
 /**
  * operators: for github, it's name; for gitlab, it's id, can be found in the html
  */
-export interface Application {
+export type Application = {
     repositoryName: string;
     hookSecret: string;
     pullRequest: {
@@ -65,4 +66,4 @@ export interface Application {
         gotMessage: string;
         doneMessage: string;
     }[];
-}
+};

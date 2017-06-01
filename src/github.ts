@@ -2,12 +2,12 @@ import * as libs from "./libs";
 
 const accessToken: string = process.env.DEPLOY_ROBOT_ACCESS_TOKEN;
 
-export interface Context {
+export type Context = {
     owner: string;
     repo: string;
     issueNumber: number;
     author: string | number;
-}
+};
 
 function getSignature(body: string, secret: string) {
     return "sha1=" + libs.crypto.createHmac("sha1", secret).update(body).digest("hex");
@@ -29,8 +29,10 @@ export function createComment(content: string, context: Context) {
             },
         }, (error, incomingMessage, body) => {
             if (error) {
+                // tslint:disable-next-line:no-console
                 console.log(error);
             } else if (incomingMessage.statusCode !== 201) {
+                // tslint:disable-next-line:no-console
                 console.log(body);
             }
 
