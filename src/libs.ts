@@ -20,8 +20,7 @@ export function exec(command: string) {
     });
 }
 
-// tslint:disable-next-line:no-var-requires
-export const getPort: () => Promise<number> = require("get-port");
+export import getPort = require("get-port");
 
 export function readAsync(filename: string) {
     return new Promise<string>((resolve, reject) => {
