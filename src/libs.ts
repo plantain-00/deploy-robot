@@ -20,7 +20,8 @@ export function exec(command: string) {
     });
 }
 
-export import getPort = require("get-port");
+import * as getPort from "get-port";
+export { getPort };
 
 export function readAsync(filename: string) {
     return new Promise<string>((resolve, reject) => {
