@@ -8,7 +8,8 @@
     "build": "npm run clean && tsc -p src",
     "start": "node dist/start.js",
     "clean": "rimraf dist",
-    "test": "tsc -p spec && jasmine"
+    "test": "tsc -p spec && jasmine",
+    "release": "clean-release"
   },
   "repository": {
     "type": "git",
@@ -36,6 +37,7 @@
     "@types/jasmine": "2.5.53",
     "@types/minimist": "1.2.0",
     "@types/request": "0.0.45",
+    "clean-release": "1.1.1",
     "jasmine": "2.6.0",
     "rimraf": "2.6.1",
     "tslint": "5.4.3",

@@ -20,7 +20,7 @@ backend: https://github.com/plantain-00/deploy-robot-backend-demo/pull/1
 
 ## step 1. install
 
-`git clone -b release https://github.com/plantain-00/deploy-robot.git . --depth=1 && npm i --production`
+`git clone https://github.com/plantain-00/deploy-robot-release.git . --depth=1 && npm i --production`
 
 ## step 2. add web hook in Github or Gitlab
 
@@ -64,7 +64,7 @@ git pull
 # backend
 cd /opt/deploy-robot-backend-demo/
 git pull
-npm i --production --registry=https://registry.npm.taobao.org
+npm i --production
 pm2 restart deploy-robot-backend-demo
 ```
 
@@ -85,7 +85,7 @@ name=deploy-robot-backend-demo-$1
 mkdir $path
 cd $path
 git clone $4 . --depth=1 -b $2
-npm i --production --registry=https://registry.npm.taobao.org
+npm i --production
 pm2 start index.js --name="$name" --node-args="--nouse-idle-notification --expose-gc --max-old-space-size=8192" -- -p $1
 ```
 
@@ -111,7 +111,7 @@ path=/opt/deploy-robot-temp-backend-demo/$1
 name=deploy-robot-backend-demo-$1
 cd $path
 git pull
-npm i --production --registry=https://registry.npm.taobao.org
+npm i --production
 pm2 restart $name
 ```
 
