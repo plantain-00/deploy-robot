@@ -22,6 +22,8 @@ backend: https://github.com/plantain-00/deploy-robot-backend-demo/pull/1
 
 `git clone https://github.com/plantain-00/deploy-robot-release.git . --depth=1 && npm i --production`
 
+for pure front-end project, make sure: `npm i http-server -g`
+
 ## step 2. add web hook in Github or Gitlab
 
 Add a web hook for the repository, the trigger events should include pull/merge request and comments of pull/merge request
@@ -36,7 +38,7 @@ For Gitlab, create an environment variable named `DEPLOY_ROBOT_PRIVATE_TOKEN`
 
 ## step 4. update your config file
 
-update your configuration at: `dist/config.js`.
+update your configuration at: `deploy-robot.config.js`.
 
 name | description
 --- | ---
@@ -72,10 +74,12 @@ pm2 restart deploy-robot-backend-demo
 
 ```bash
 # frontend
-path=/opt/deploy-robot-temp-demo/$3
+path=/opt/deploy-robot-temp-demo/$1
+name=deploy-robot-temp-demo-$1
 mkdir $path
 cd $path
 git clone $4 . --depth=1 -b $2
+pm2 start $(which http-server) --name="$name" -- -p $1
 ```
 
 ```bash
@@ -100,7 +104,7 @@ $4 | clone url
 
 ```bash
 # frontend
-path=/opt/deploy-robot-temp-demo/$2
+path=/opt/deploy-robot-temp-demo/$1
 cd $path
 git pull
 ```
@@ -124,8 +128,10 @@ $2 | pull request id
 
 ```bash
 # frontend
-path=/opt/deploy-robot-temp-demo/$2
+path=/opt/deploy-robot-temp-demo/$1
+name=deploy-robot-temp-demo-$1
 rm -rf $path
+pm2 delete $name
 ```
 
 ```bash
