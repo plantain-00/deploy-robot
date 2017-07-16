@@ -67,3 +67,8 @@ export type Application = {
         doneMessage: string;
     }[];
 };
+
+export type Config = {
+    applications: Application[];
+    localeName: string;
+};
