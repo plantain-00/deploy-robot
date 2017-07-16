@@ -139,6 +139,8 @@ export function start(app: libs.express.Application, path: string, mode: string,
                         response.end(`no pull request: ${pullRequestId}.`);
                         return;
                     }
+                    delete ports[repositoryName][pullRequestId];
+                    await onPortsUpdated();
                     await handler.createComment(locale.pullRequestMergedGot, context);
                     context.doneText = locale.pullRequestMergedDone;
                     commands.push({ command: `${application.pullRequest.mergedCommand} ${port} ${pullRequestId}`, context });
@@ -148,6 +150,8 @@ export function start(app: libs.express.Application, path: string, mode: string,
                         response.end(`no pull request: ${pullRequestId}.`);
                         return;
                     }
+                    delete ports[repositoryName][pullRequestId];
+                    await onPortsUpdated();
                     await handler.createComment(locale.pullRequestClosedGot, context);
                     context.doneText = locale.pullRequestClosedDone;
                     commands.push({ command: `${application.pullRequest.closedCommand} ${port} ${pullRequestId}`, context });
