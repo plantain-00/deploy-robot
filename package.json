@@ -27,7 +27,6 @@
     "body-parser": "1.17.2",
     "express": "4.15.3",
     "get-port": "3.1.0",
-    "minimist": "1.2.0",
     "request": "2.81.0"
   },
   "engines": {
@@ -36,8 +35,8 @@
   "devDependencies": {
     "@types/body-parser": "1.16.4",
     "@types/express": "4.0.36",
+    "@types/get-port": "0.0.4",
     "@types/jasmine": "2.5.53",
-    "@types/minimist": "1.2.0",
     "@types/request": "0.0.45",
     "clean-release": "1.2.1",
     "jasmine": "2.6.0",

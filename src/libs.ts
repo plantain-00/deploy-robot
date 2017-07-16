@@ -3,10 +3,9 @@ import * as crypto from "crypto";
 import * as childProcess from "child_process";
 import * as request from "request";
 import * as bodyParser from "body-parser";
-import * as minimist from "minimist";
 import * as fs from "fs";
 
-export { express, crypto, request, bodyParser, minimist };
+export { express, crypto, request, bodyParser, fs };
 
 export function exec(command: string) {
     return new Promise<void>((resolve, reject) => {
@@ -22,18 +21,6 @@ export function exec(command: string) {
 
 import * as getPort from "get-port";
 export { getPort };
-
-export function readAsync(filename: string) {
-    return new Promise<string>((resolve, reject) => {
-        fs.readFile(filename, "utf8", (error, data) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(data);
-            }
-        });
-    });
-}
 
 export function writeAsync(filename: string, data: string) {
     return new Promise<void>((resolve, reject) => {
@@ -71,4 +58,7 @@ export type Application = {
 export type Config = {
     applications: Application[];
     localeName: string;
+    mode: "github" | "gitlab";
+    port: number;
+    host: string;
 };

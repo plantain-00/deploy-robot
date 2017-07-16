@@ -3,6 +3,9 @@ import * as libs from "./libs";
 const defaultConfig: libs.Config = {
     applications: [],
     localeName: "zh-cn",
+    mode: "github",
+    port: 9996,
+    host: "localhost",
 };
 
 try {

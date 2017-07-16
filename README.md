@@ -153,16 +153,6 @@ $2 | pull request id
 node dist/start.js
 ```
 
-or
-
-```bash
-node dist/start.js -m github -p 9996 -h 0.0.0.0
-```
-
-+ `-m --mode [mode]`
-+ `-p --port [port]`
-+ `-h --host [host]`
-
 then open http://localhost:9996 in your browser.
 
 ## Why no bitbucket or gogs?
