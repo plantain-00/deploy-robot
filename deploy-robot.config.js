@@ -1,3 +1,10 @@
+const authorizedAuthors = ['plantain-00']
+
+const filter = (comment, author) => comment.indexOf('robot') >= 0 &&
+  comment.indexOf('deploy') >= 0 &&
+  comment.indexOf('please') >= 0 &&
+  authorizedAuthors.findIndex(a => a === author) >= 0
+
 module.exports = function (defaultConfig) {
   defaultConfig.applications = [
     {
@@ -14,10 +21,7 @@ module.exports = function (defaultConfig) {
       },
       commentActions: [
         {
-          filter: (comment, author) => comment.indexOf('robot') >= 0 &&
-            comment.indexOf('deploy') >= 0 &&
-            comment.indexOf('please') >= 0 &&
-            ['plantain-00'].findIndex(a => a === author) >= 0,
+          filter,
           command: '/opt/scripts/deploy.sh',
           gotMessage: '正在部署...',
           doneMessage: '部署已完成，https://deploy-demo.yorkyao.xyz/'
@@ -38,10 +42,7 @@ module.exports = function (defaultConfig) {
       },
       commentActions: [
         {
-          filter: (comment, author) => comment.indexOf('robot') >= 0 &&
-            comment.indexOf('deploy') >= 0 &&
-            comment.indexOf('please') >= 0 &&
-            ['plantain-00'].findIndex(a => a === author) >= 0,
+          filter,
           command: '/opt/backend_scripts/deploy.sh',
           gotMessage: '正在部署...',
           doneMessage: '部署已完成，https://deploy-demo.yorkyao.xyz/api/'
