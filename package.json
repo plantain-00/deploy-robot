@@ -4,14 +4,12 @@
   "description": "a deploy robot fired by comment",
   "main": "dist/robot.js",
   "scripts": {
-    "lint": "tslint \"src/*.ts\" && npm run standard",
-    "build": "npm run clean && tsc -p src",
     "start": "node dist/start.js",
-    "clean": "rimraf dist",
-    "test": "tsc -p spec && jasmine",
-    "release": "clean-release",
-    "standard": "standard \"**/*.config.js\"",
-    "fix": "standard --fix \"**/*.config.js\""
+    "build": "clean-scripts build",
+    "lint": "clean-scripts lint",
+    "test": "clean-scripts test",
+    "fix": "clean-scripts fix",
+    "release": "clean-scripts release"
   },
   "repository": {
     "type": "git",
@@ -39,6 +37,7 @@
     "@types/jasmine": "2.5.53",
     "@types/request": "0.0.45",
     "clean-release": "1.2.1",
+    "clean-scripts": "1.0.0",
     "jasmine": "2.6.0",
     "rimraf": "2.6.1",
     "standard": "10.0.2",
