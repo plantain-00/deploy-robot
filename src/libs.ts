@@ -9,12 +9,16 @@ export { express, crypto, request, bodyParser, fs };
 
 export function exec(command: string) {
     return new Promise<void>((resolve, reject) => {
-        childProcess.exec(command, (error, stdout, stderr) => {
+        const subProcess = childProcess.exec(command, (error, stdout, stderr) => {
             if (error) {
                 reject(error);
             } else {
                 resolve();
             }
+        });
+        subProcess.stdout.on("data", chunk => {
+            // tslint:disable-next-line:no-console
+            console.log(chunk);
         });
     });
 }
@@ -61,4 +65,26 @@ export type Config = {
     mode: "github" | "gitlab";
     port: number;
     host: string;
+};
+
+export type Handler<T> = {
+    commentEventName: string;
+    pullRequestEventName: string;
+    pullRequestOpenActionName: string;
+    pullRequestUpdateActionName: string;
+    getRepositoryName(request: express.Request): string;
+    verifySignature(request: express.Request, application: Application): boolean;
+    getEventName(request: express.Request): string;
+    getCommentAuthor(request: express.Request): string | number;
+    getComment(request: express.Request): string;
+    getCommentCreationContext(request: express.Request, application: Application): T;
+    getPullRequestCommentCreationContext(request: express.Request, application: Application): T;
+    getPullRequestAction(request: express.Request): string;
+    isPullRequestMerged(request: express.Request, action: string): boolean;
+    isPullRequestClosed(request: express.Request, action: string): boolean;
+    createComment(content: string, context: T): Promise<void>;
+    getPullRequestAuthor(request: express.Request): string | number;
+    getPullRequestId(request: express.Request): number;
+    getBranchName(request: express.Request): string;
+    getHeadRepositoryCloneUrl(request: express.Request): string;
 };

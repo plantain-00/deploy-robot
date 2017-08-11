@@ -10,7 +10,10 @@ app.use(libs.bodyParser.urlencoded({ extended: true }));
 
 const locale = getLocale(config.localeName);
 
-const handlers: { [modeName: string]: Handler } = { github, gitlab };
+const handlers: { [modeName: string]: libs.Handler<Context> } = {
+    github: github.githubHander,
+    gitlab: gitlab.gitlabHander,
+};
 const handler = handlers[config.mode];
 if (!handler) {
     // tslint:disable-next-line:no-console
@@ -156,28 +159,6 @@ app.listen(config.port, config.host, () => {
     // tslint:disable-next-line:no-console
     console.log(`deploy robot is running at: ${config.host}:${config.port} in mode: ${config.mode}`);
 });
-
-type Handler = {
-    commentEventName: string;
-    pullRequestEventName: string;
-    pullRequestOpenActionName: string;
-    pullRequestUpdateActionName: string;
-    getRepositoryName(request: libs.express.Request): string;
-    verifySignature(request: libs.express.Request, application: libs.Application): boolean;
-    getEventName(request: libs.express.Request): string;
-    getCommentAuthor(request: libs.express.Request): string | number;
-    getComment(request: libs.express.Request): string;
-    getCommentCreationContext(request: libs.express.Request, application: libs.Application): Context;
-    getPullRequestCommentCreationContext(request: libs.express.Request, application: libs.Application): Context;
-    getPullRequestAction(request: libs.express.Request): string;
-    isPullRequestMerged(request: libs.express.Request, action: string): boolean;
-    isPullRequestClosed(request: libs.express.Request, action: string): boolean;
-    createComment(content: string, context: Context): Promise<void>;
-    getPullRequestAuthor(request: libs.express.Request): string | number;
-    getPullRequestId(request: libs.express.Request): number;
-    getBranchName(request: libs.express.Request): string;
-    getHeadRepositoryCloneUrl(request: libs.express.Request): string;
-};
 
 type Context = (github.Context | gitlab.Context) & { doneText?: string };
 

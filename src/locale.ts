@@ -1,4 +1,4 @@
-export type Locale = {
+type Locale = {
     pullRequestOpenedGot: string;
     pullRequestOpenedDone: string;
     pullRequestUpdatedGot: string;
@@ -9,7 +9,7 @@ export type Locale = {
     pullRequestClosedDone: string;
 };
 
-export const defaultLocale: Locale = {
+const defaultLocale: Locale = {
     pullRequestOpenedGot: "thanks for your contribution, a test application is being created...",
     pullRequestOpenedDone: "the test application is created now, you can test it at {0}",
     pullRequestUpdatedGot: "the test application is being updated...",
@@ -20,7 +20,7 @@ export const defaultLocale: Locale = {
     pullRequestClosedDone: "the test application is destroyed and not available now",
 };
 
-export const locales: { [name: string]: Locale } = {
+const locales: { [name: string]: Locale } = {
     "zh-cn": {
         pullRequestOpenedGot: "感谢贡献代码，即将创建测试程序...",
         pullRequestOpenedDone: "测试程序现在已经创建好，可以在 {0} 进行测试。",
