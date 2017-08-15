@@ -16,10 +16,8 @@ export function exec(command: string) {
                 resolve();
             }
         });
-        subProcess.stdout.on("data", chunk => {
-            // tslint:disable-next-line:no-console
-            console.log(chunk);
-        });
+        subProcess.stdout.pipe(process.stdout);
+        subProcess.stderr.pipe(process.stderr);
     });
 }
 
