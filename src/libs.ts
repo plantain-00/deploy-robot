@@ -36,6 +36,11 @@ export function writeAsync(filename: string, data: string) {
     });
 }
 
+export function printInConsole(message: any) {
+    // tslint:disable-next-line:no-console
+    console.log(message);
+}
+
 /**
  * operators: for github, it's name; for gitlab, it's id, can be found in the html
  */

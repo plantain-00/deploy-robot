@@ -19,11 +19,9 @@ export const gitlabHander: libs.Handler<Context> = {
                 },
             }, (error, incomingMessage, body) => {
                 if (error) {
-                    // tslint:disable-next-line:no-console
-                    console.log(error);
+                    libs.printInConsole(error);
                 } else if (incomingMessage.statusCode !== 201) {
-                    // tslint:disable-next-line:no-console
-                    console.log(body);
+                    libs.printInConsole(body);
                 }
 
                 resolve();

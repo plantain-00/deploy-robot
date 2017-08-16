@@ -16,8 +16,7 @@ const handlers: { [modeName: string]: libs.Handler<Context> } = {
 };
 const handler = handlers[config.mode];
 if (!handler) {
-    // tslint:disable-next-line:no-console
-    console.log(`mode "${config.mode}" is not found in "handlers".`);
+    libs.printInConsole(`mode "${config.mode}" is not found in "handlers".`);
     process.exit(1);
 }
 
@@ -33,8 +32,7 @@ async function runCommands() {
                 await libs.exec(firstCommand.command);
                 await handler.createComment(firstCommand.context.doneText!, firstCommand.context);
             } catch (error) {
-                // tslint:disable-next-line:no-console
-                console.log(error);
+                libs.printInConsole(error);
                 failedCommands.push({ command: firstCommand, error });
                 await handler.createComment(error, firstCommand.context);
             }
@@ -49,8 +47,7 @@ try {
     const data = libs.fs.readFileSync(dataFilePath, "utf8");
     ports = JSON.parse(data);
 } catch (error) {
-    // tslint:disable-next-line:no-console
-    console.log(error);
+    libs.printInConsole(error);
     ports = {};
 }
 
@@ -149,15 +146,13 @@ app.post("/", async (request, response) => {
             response.end(`can not handle event: ${eventName}.`);
         }
     } catch (error) {
-        // tslint:disable-next-line:no-console
-        console.log(error);
+        libs.printInConsole(error);
         response.end(error.toString());
     }
 });
 
 app.listen(config.port, config.host, () => {
-    // tslint:disable-next-line:no-console
-    console.log(`deploy robot is running at: ${config.host}:${config.port} in mode: ${config.mode}`);
+    libs.printInConsole(`deploy robot is running at: ${config.host}:${config.port} in mode: ${config.mode}`);
 });
 
 type Context = (github.Context | gitlab.Context) & { doneText?: string };
