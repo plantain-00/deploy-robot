@@ -1,9 +1,8 @@
 language: node_js
 node_js:
   - "8"
-before_script:
-  - npm i
 script:
+  - git checkout package-lock.json
   - npm run build
   - npm run lint
 env:
