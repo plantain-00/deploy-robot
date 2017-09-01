@@ -77,7 +77,7 @@ export type Handler<T> = {
     pullRequestUpdateActionName: string;
     getRepositoryName(request: express.Request): string;
     verifySignature(request: express.Request, application: Application): boolean;
-    getEventName(request: express.Request): string;
+    getEventName(request: express.Request): string | undefined;
     getCommentAuthor(request: express.Request): string | number;
     getComment(request: express.Request): string;
     getCommentCreationContext(request: express.Request, application: Application): T;

@@ -1,7 +1,7 @@
 import * as libs from "./libs";
 
 const gitlabHost = "https://gitlab.com";
-const privateToken: string = process.env.DEPLOY_ROBOT_PRIVATE_TOKEN;
+const privateToken = process.env.DEPLOY_ROBOT_PRIVATE_TOKEN;
 
 export const gitlabHander: libs.Handler<Context> = {
     createComment(content: string, context: Context) {

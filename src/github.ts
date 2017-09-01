@@ -1,6 +1,6 @@
 import * as libs from "./libs";
 
-const accessToken: string = process.env.DEPLOY_ROBOT_ACCESS_TOKEN;
+const accessToken = process.env.DEPLOY_ROBOT_ACCESS_TOKEN;
 
 export const githubHander: libs.Handler<Context> = {
     createComment(content: string, context: Context) {
@@ -32,7 +32,7 @@ export const githubHander: libs.Handler<Context> = {
         return request.body.repository.name;
     },
     verifySignature(request: libs.express.Request, application: libs.Application) {
-        const remoteSignature: string = request.header("X-Hub-Signature");
+        const remoteSignature = request.header("X-Hub-Signature");
         const signature = getSignature(JSON.stringify(request.body), application.hookSecret);
         return signature === remoteSignature;
     },
