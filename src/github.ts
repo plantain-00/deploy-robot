@@ -37,7 +37,7 @@ export const githubHander: libs.Handler<Context> = {
         return signature === remoteSignature;
     },
     getEventName(request: libs.express.Request) {
-        return request.header("X-GitHub-Event");
+        return request.header("X-GitHub-Event") as string;
     },
     commentEventName: "issue_comment",
     pullRequestEventName: "pull_request",

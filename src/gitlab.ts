@@ -36,7 +36,7 @@ export const gitlabHander: libs.Handler<Context> = {
         return token === application.hookSecret;
     },
     getEventName(request: libs.express.Request) {
-        return request.header("X-Gitlab-Event");
+        return request.header("X-Gitlab-Event") as string;
     },
     commentEventName: "Note Hook",
     pullRequestEventName: "Merge Request Hook",
