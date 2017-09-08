@@ -2,7 +2,6 @@ language: node_js
 node_js:
   - "8"
 script:
-  - git checkout package-lock.json
   - npm run build
   - npm run lint
   - npm run test
