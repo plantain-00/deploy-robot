@@ -155,6 +155,14 @@ app.listen(config.port, config.host, () => {
     libs.printInConsole(`deploy robot is running at: ${config.host}:${config.port} in mode: ${config.mode}`);
 });
 
+process.on("SIGINT", () => {
+    process.exit();
+});
+
+process.on("SIGTERM", () => {
+    process.exit();
+});
+
 type Context = (github.Context | gitlab.Context) & { doneText?: string };
 
 type Command = {
