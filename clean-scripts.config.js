@@ -3,15 +3,18 @@ const util = require('util')
 
 const execAsync = util.promisify(childProcess.exec)
 
+const tsFiles = `"src/**/*.ts" "spec/**/*.ts" "test/**/*.ts"`
+const jsFiles = `"*.config.js"`
+
 module.exports = {
   build: [
     `rimraf dist/`,
     `tsc -p src`
   ],
   lint: {
-    ts: `tslint "src/**/*.ts"`,
-    js: `standard "**/*.config.js"`,
-    export: `no-unused-export "src/**/*.ts"`
+    ts: `tslint ${tsFiles}`,
+    js: `standard ${jsFiles}`,
+    export: `no-unused-export ${tsFiles}`
   },
   test: [
     'tsc -p spec',
@@ -25,8 +28,8 @@ module.exports = {
     }
   ],
   fix: {
-    ts: `tslint --fix "src/**/*.ts"`,
-    js: `standard --fix "**/*.config.js"`
+    ts: `tslint --fix ${tsFiles}`,
+    js: `standard --fix ${jsFiles}`
   },
   release: `clean-release`,
   watch: `watch-then-execute "src/**/*.ts" --script "npm run build"`
