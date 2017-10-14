@@ -156,6 +156,12 @@ node dist/start.js
 
 then open http://localhost:9996 in your browser.
 
+## docker
+
+```bash
+docker run -d -p 9996:9996 plantain/deploy-robot
+```
+
 ## Why no bitbucket or gogs?
 
 Can not set private access token, and can not create comment, for now.
