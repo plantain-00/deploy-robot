@@ -3,10 +3,12 @@ const { execAsync } = require('clean-scripts')
 const tsFiles = `"src/**/*.ts" "spec/**/*.ts" "test/**/*.ts"`
 const jsFiles = `"*.config.js"`
 
+const tscCommand = `tsc -p src`
+
 module.exports = {
   build: [
     `rimraf dist/`,
-    `tsc -p src`
+    tscCommand
   ],
   lint: {
     ts: `tslint ${tsFiles}`,
@@ -29,5 +31,5 @@ module.exports = {
     js: `standard --fix ${jsFiles}`
   },
   release: `clean-release`,
-  watch: `watch-then-execute "src/**/*.ts" --script "npm run build"`
+  watch: `${tscCommand} --watch`
 }

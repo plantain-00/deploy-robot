@@ -43,8 +43,7 @@
     "rimraf": "2.6.2",
     "standard": "10.0.3",
     "tslint": "5.8.0",
-    "typescript": "2.5.3",
-    "watch-then-execute": "1.0.2"
+    "typescript": "2.5.3"
   },
   "types": "./dist/robot.d.ts"
 }
