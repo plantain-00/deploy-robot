@@ -19,9 +19,9 @@ export const githubHander: libs.Handler<Context> = {
                 },
             }, (error, incomingMessage, body) => {
                 if (error) {
-                    libs.printInConsole(error);
+                    console.log(error);
                 } else if (incomingMessage.statusCode !== 201) {
-                    libs.printInConsole(body);
+                    console.log(body);
                 }
 
                 resolve();
