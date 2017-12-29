@@ -1,3 +1,5 @@
+# deploy-robot
+
 [![Dependency Status](https://david-dm.org/plantain-00/deploy-robot.svg)](https://david-dm.org/plantain-00/deploy-robot)
 [![devDependency Status](https://david-dm.org/plantain-00/deploy-robot/dev-status.svg)](https://david-dm.org/plantain-00/deploy-robot#info=devDependencies)
 [![Build Status: Linux](https://travis-ci.org/plantain-00/deploy-robot.svg?branch=master)](https://travis-ci.org/plantain-00/deploy-robot)
@@ -15,9 +17,9 @@
 
 ## demo
 
-frontend: https://github.com/plantain-00/deploy-robot-demo/pull/1
+frontend: `https://github.com/plantain-00/deploy-robot-demo/pull/1`
 
-backend: https://github.com/plantain-00/deploy-robot-backend-demo/pull/1
+backend: `https://github.com/plantain-00/deploy-robot-backend-demo/pull/1`
 
 ## step 1. install
 
@@ -55,7 +57,7 @@ doneMessage | the message when you have done to execute the script
 
 ## step 5. update your scripts
 
-#### deploy
+### deploy
 
 ```bash
 # frontend
@@ -71,7 +73,7 @@ npm i --production
 pm2 restart deploy-robot-backend-demo
 ```
 
-#### PR opened
+### PR opened
 
 ```bash
 # frontend
@@ -101,7 +103,7 @@ $2 | branch name
 $3 | pull request id
 $4 | clone url
 
-#### PR updated
+### PR updated
 
 ```bash
 # frontend
@@ -125,7 +127,7 @@ parameters | name
 $1 | available port
 $2 | pull request id
 
-#### PR merged or closed
+### PR merged or closed
 
 ```bash
 # frontend
@@ -154,7 +156,7 @@ $2 | pull request id
 node dist/start.js
 ```
 
-then open http://localhost:9996 in your browser.
+then open `http://localhost:9996` in your browser.
 
 ## docker
 
@@ -162,6 +164,6 @@ then open http://localhost:9996 in your browser.
 docker run -d -p 9996:9996 plantain/deploy-robot
 ```
 
-## Why no bitbucket or gogs?
+## Why no bitbucket or gogs
 
 Can not set private access token, and can not create comment, for now.
