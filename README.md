@@ -25,7 +25,7 @@ backend: <https://github.com/plantain-00/deploy-robot-backend-demo/pull/1>
 
 `git clone https://github.com/plantain-00/deploy-robot-release.git . --depth=1 && npm i --production`
 
-for pure front-end project, make sure: `npm i http-server -g`
+for pure front-end project, make sure: `yarn global add http-server`
 
 ## step 2. add web hook in Github or Gitlab
 
