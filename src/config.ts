@@ -8,7 +8,6 @@ const defaultConfig: libs.Config = {
   host: 'localhost'
 }
 
-// tslint:disable-next-line:no-var-requires
 require('../deploy-robot.config.js')(defaultConfig)
 
 export = defaultConfig
