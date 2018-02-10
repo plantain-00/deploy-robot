@@ -1,7 +1,7 @@
-import * as express from 'express'
+import express from 'express'
 import * as crypto from 'crypto'
 import * as childProcess from 'child_process'
-import * as request from 'request'
+import request from 'request'
 import * as bodyParser from 'body-parser'
 import * as fs from 'fs'
 
@@ -21,7 +21,7 @@ export function exec (command: string) {
   })
 }
 
-import * as getPort from 'get-port'
+import getPort from 'get-port'
 export { getPort }
 
 export function writeAsync (filename: string, data: string) {
