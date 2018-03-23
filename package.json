@@ -39,7 +39,7 @@
     "@types/request": "2.47.0",
     "clean-scripts": "1.7.0",
     "jasmine": "3.1.0",
-    "markdownlint-cli": "0.7.1",
+    "markdownlint-cli": "0.8.1",
     "no-unused-export": "1.5.0",
     "rimraf": "2.6.2",
     "standard": "11.0.1",
