@@ -8,6 +8,7 @@ module.exports = {
   ],
   exclude: [
   ],
+  askVersion: true,
   releaseRepository: 'https://github.com/plantain-00/deploy-robot-release.git',
   postScript: [
     'cd "[dir]" && rm -rf .git',
