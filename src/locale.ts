@@ -33,7 +33,7 @@ const locales: { [name: string]: Locale } = {
   }
 }
 
-export function getLocale (name: string | undefined | Locale): Locale {
+export function getLocale(name: string | undefined | Locale): Locale {
   if (name === undefined) {
     return defaultLocale
   }

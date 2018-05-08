@@ -23,7 +23,7 @@ if (!handler) {
 let isExecuting = false // commands are designed be excuted one by one in a process globally.
 const commands: Command[] = []
 const failedCommands: { command: Command, error: Error }[] = []
-async function runCommands () {
+async function runCommands() {
   if (!isExecuting) {
     isExecuting = true
     while (commands.length > 0) {
@@ -51,7 +51,7 @@ try {
   ports = {}
 }
 
-function savePorts () {
+function savePorts() {
   return libs.writeAsync(dataFilePath, JSON.stringify(ports))
 }
 
@@ -59,7 +59,7 @@ app.get('/', (request, response) => {
   response.send(`<pre>${JSON.stringify({ commands, ports }, null, '  ')}</pre>`)
 })
 
-app.post('/', async (request, response) => {
+app.post('/', async(request, response) => {
   try {
     const repositoryName = handler.getRepositoryName(request)
     const application = config.applications.find((value, index, obj) => value.repositoryName === repositoryName)
