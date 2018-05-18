@@ -22,11 +22,11 @@
   },
   "homepage": "https://github.com/plantain-00/deploy-robot#readme",
   "dependencies": {
-    "body-parser": "1.18.2",
+    "body-parser": "1.18.3",
     "express": "4.16.3",
     "get-port": "3.2.0",
-    "request": "2.85.0",
-    "tslib": "1.9.0"
+    "request": "2.86.0",
+    "tslib": "1.9.1"
   },
   "engines": {
     "node": ">=6.0.0"
@@ -39,10 +39,10 @@
     "@types/get-port": "3.2.0",
     "@types/jasmine": "2.8.7",
     "@types/request": "2.47.0",
-    "clean-scripts": "1.8.0",
+    "clean-scripts": "1.9.2",
     "jasmine": "3.1.0",
-    "markdownlint-cli": "0.8.1",
-    "no-unused-export": "1.5.0",
+    "markdownlint-cli": "0.8.2",
+    "no-unused-export": "1.5.1",
     "rimraf": "2.6.2",
     "standard": "11.0.1",
     "tslint": "5.10.0",
