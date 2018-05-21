@@ -1,3 +1,5 @@
+const { Program } = require('clean-scripts')
+
 const tsFiles = `"src/**/*.ts" "spec/**/*.ts" "test/**/*.ts"`
 const jsFiles = `"*.config.js"`
 
@@ -17,7 +19,8 @@ module.exports = {
   },
   test: [
     'tsc -p spec',
-    'jasmine'
+    'jasmine',
+    new Program('clean-release --config clean-run.config.js', 30000)
   ],
   fix: {
     ts: `tslint --fix ${tsFiles}`,
