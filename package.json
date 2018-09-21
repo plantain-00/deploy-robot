@@ -38,7 +38,7 @@
     "@types/get-port": "4.0.0",
     "@types/jasmine": "2.8.8",
     "@types/request": "2.47.1",
-    "clean-release": "2.6.0",
+    "clean-release": "2.7.0",
     "clean-scripts": "1.9.2",
     "jasmine": "3.2.0",
     "markdownlint-cli": "0.13.0",
