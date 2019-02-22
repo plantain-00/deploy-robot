@@ -51,7 +51,7 @@
     "tslint": "5.12.1",
     "tslint-config-standard": "8.0.1",
     "tslint-sonarts": "1.9.0",
-    "type-coverage": "1.9.1",
+    "type-coverage": "1.10.0",
     "typescript": "3.3.1"
   },
   "types": "./dist/robot.d.ts"
