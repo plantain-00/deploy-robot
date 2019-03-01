@@ -10,8 +10,12 @@ export { express, crypto, request, bodyParser, fs }
 export function exec(command: string) {
   return new Promise<void>((resolve, reject) => {
     const subProcess = childProcess.exec(command, (error, stdout, stderr) => error ? reject(error) : resolve())
-    subProcess.stdout.pipe(process.stdout)
-    subProcess.stderr.pipe(process.stderr)
+    if (subProcess.stdout) {
+      subProcess.stdout.pipe(process.stdout)
+    }
+    if (subProcess.stderr) {
+      subProcess.stderr.pipe(process.stderr)
+    }
   })
 }
 
