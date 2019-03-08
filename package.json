@@ -23,7 +23,7 @@
   "dependencies": {
     "body-parser": "1.18.3",
     "express": "4.16.4",
-    "get-port": "4.1.0",
+    "get-port": "4.2.0",
     "request": "2.88.0",
     "tslib": "1.9.3"
   },
