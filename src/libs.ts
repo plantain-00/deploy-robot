@@ -1,11 +1,11 @@
 import express from 'express'
-import * as crypto from 'crypto'
+import { createHmac } from 'crypto'
 import * as childProcess from 'child_process'
 import request from 'request'
 import * as bodyParser from 'body-parser'
 import * as fs from 'fs'
 
-export { express, crypto, request, bodyParser, fs }
+export { express, createHmac, request, bodyParser, fs }
 
 export function exec(command: string) {
   return new Promise<void>((resolve, reject) => {

@@ -102,5 +102,5 @@ export type Context = {
 }
 
 function getSignature(body: string, secret: string) {
-  return 'sha1=' + libs.crypto.createHmac('sha1', secret).update(body).digest('hex')
+  return 'sha1=' + libs.createHmac('sha1', secret).update(body).digest('hex')
 }
