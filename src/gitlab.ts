@@ -85,7 +85,7 @@ export const gitlabHander: libs.Handler<Context> = {
   }
 }
 
-export type Context = {
+export interface Context {
   projectId: number;
   mergeRequestId: number;
   author: string | number;

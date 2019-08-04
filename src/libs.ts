@@ -31,7 +31,7 @@ export function writeAsync(filename: string, data: string) {
 /**
  * operators: for github, it's name; for gitlab, it's id, can be found in the html
  */
-export type Application = {
+export interface Application {
   repositoryName: string;
   hookSecret: string;
   pullRequest: {
@@ -49,7 +49,7 @@ export type Application = {
   }[];
 }
 
-export type Config = {
+export interface Config {
   applications: Application[];
   localeName: string;
   mode: 'github' | 'gitlab';
@@ -57,7 +57,7 @@ export type Config = {
   host: string;
 }
 
-export type Handler<T> = {
+export interface Handler<T> {
   commentEventName: string;
   pullRequestEventName: string;
   pullRequestOpenActionName: string;

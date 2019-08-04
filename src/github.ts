@@ -94,7 +94,7 @@ export const githubHander: libs.Handler<Context> = {
   }
 }
 
-export type Context = {
+export interface Context {
   owner: string;
   repo: string;
   issueNumber: number;

@@ -1,4 +1,4 @@
-type Locale = {
+interface Locale {
   pullRequestOpenedGot: string;
   pullRequestOpenedDone: string;
   pullRequestUpdatedGot: string;

@@ -1,6 +1,6 @@
 const { Program } = require('clean-scripts')
 
-const tsFiles = `"src/**/*.ts" "spec/**/*.ts" "test/**/*.ts"`
+const tsFiles = `"src/**/*.ts" "spec/**/*.ts"`
 const jsFiles = `"*.config.js"`
 
 const tscCommand = `tsc -p src`
@@ -11,8 +11,7 @@ module.exports = {
     tscCommand
   ],
   lint: {
-    ts: `tslint ${tsFiles}`,
-    js: `standard ${jsFiles}`,
+    ts: `eslint --ext .js,.ts,.tsx ${tsFiles} ${jsFiles}`,
     export: `no-unused-export ${tsFiles}`,
     commit: `commitlint --from=HEAD~1`,
     markdown: `markdownlint README.md`,
@@ -23,9 +22,6 @@ module.exports = {
     'jasmine',
     new Program('clean-release --config clean-run.config.js', 30000)
   ],
-  fix: {
-    ts: `tslint --fix ${tsFiles}`,
-    js: `standard --fix ${jsFiles}`
-  },
+  fix: `eslint --ext .js,.ts,.tsx ${tsFiles} ${jsFiles} --fix`,
   watch: `${tscCommand} --watch`
 }

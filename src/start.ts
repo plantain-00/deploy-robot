@@ -165,9 +165,9 @@ process.on('SIGTERM', () => {
 
 type Context = (github.Context | gitlab.Context) & { doneText?: string }
 
-type Command = {
+interface Command {
   context: Context;
   command: string;
 }
 
-type Ports = { [repositoryName: string]: { [pullRequestId: number]: number } }
+interface Ports { [repositoryName: string]: { [pullRequestId: number]: number } }
