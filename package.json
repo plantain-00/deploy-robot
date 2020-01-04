@@ -34,14 +34,14 @@
     "atLeast": 90.28
   },
   "devDependencies": {
-    "@commitlint/cli": "8.2.0",
-    "@commitlint/config-conventional": "8.2.0",
+    "@commitlint/cli": "8.3.4",
+    "@commitlint/config-conventional": "8.3.4",
     "@types/body-parser": "1.17.1",
     "@types/express": "4.17.2",
     "@types/jasmine": "3.5.0",
     "@types/request": "2.48.4",
-    "@typescript-eslint/eslint-plugin": "2.13.0",
-    "@typescript-eslint/parser": "2.13.0",
+    "@typescript-eslint/eslint-plugin": "2.14.0",
+    "@typescript-eslint/parser": "2.14.0",
     "clean-release": "2.7.0",
     "clean-scripts": "1.12.1",
     "eslint": "6.8.0",
@@ -51,7 +51,7 @@
     "markdownlint-cli": "0.20.0",
     "no-unused-export": "1.10.0",
     "rimraf": "3.0.0",
-    "type-coverage": "2.3.1",
+    "type-coverage": "2.4.0",
     "typescript": "3.7.4"
   },
   "types": "./dist/robot.d.ts"
