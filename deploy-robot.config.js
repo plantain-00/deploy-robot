@@ -24,7 +24,7 @@ module.exports = function (defaultConfig) {
           filter,
           command: '/opt/scripts/deploy.sh',
           gotMessage: '正在部署...',
-          doneMessage: '部署已完成，https://deploy-demo.yorkyao.xyz/'
+          doneMessage: '部署已完成，https://deploy-demo.yorkyao.com/'
         }
       ]
     },
@@ -45,7 +45,7 @@ module.exports = function (defaultConfig) {
           filter,
           command: '/opt/backend_scripts/deploy.sh',
           gotMessage: '正在部署...',
-          doneMessage: '部署已完成，https://deploy-demo.yorkyao.xyz/api/'
+          doneMessage: '部署已完成，https://deploy-demo.yorkyao.com/api/'
         }
       ]
     }
