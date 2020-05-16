@@ -115,7 +115,7 @@ app.post('/', async(request, response) => {
         await handler.createComment(locale.pullRequestUpdatedGot, context)
         context.doneText = locale.pullRequestUpdatedDone
         commands.push({ command: `${application.pullRequest.updatedCommand} ${port} ${pullRequestId}`, context })
-      } else if (handler.isPullRequestMerged) {
+      } else if (handler.isPullRequestMerged(request, action)) {
         const port = ports[repositoryName][pullRequestId]
         if (!port) {
           response.end(`no pull request: ${pullRequestId}.`)
@@ -126,7 +126,7 @@ app.post('/', async(request, response) => {
         await handler.createComment(locale.pullRequestMergedGot, context)
         context.doneText = locale.pullRequestMergedDone
         commands.push({ command: `${application.pullRequest.mergedCommand} ${port} ${pullRequestId}`, context })
-      } else if (handler.isPullRequestClosed) {
+      } else if (handler.isPullRequestClosed(request, action)) {
         const port = ports[repositoryName][pullRequestId]
         if (!port) {
           response.end(`no pull request: ${pullRequestId}.`)
