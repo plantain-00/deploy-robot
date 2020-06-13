@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   include: [
     'dist/*.js',
     'LICENSE',

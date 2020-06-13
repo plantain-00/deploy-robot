@@ -1,11 +1,11 @@
-const { Program } = require('clean-scripts')
+import { Program } from 'clean-scripts'
 
-const tsFiles = `"src/**/*.ts" "spec/**/*.ts"`
+const tsFiles = `"src/**/*.ts"`
 const jsFiles = `"*.config.js"`
 
 const tscCommand = `tsc -p src`
 
-module.exports = {
+export default {
   build: [
     `rimraf dist/`,
     tscCommand
@@ -18,9 +18,7 @@ module.exports = {
     typeCoverage: 'type-coverage -p src --ignore-catch'
   },
   test: [
-    'tsc -p spec',
-    'jasmine',
-    new Program('clean-release --config clean-run.config.js', 30000)
+    new Program('clean-release --config clean-run.config.ts', 30000)
   ],
   fix: `eslint --ext .js,.ts,.tsx ${tsFiles} ${jsFiles} --fix`,
   watch: `${tscCommand} --watch`
