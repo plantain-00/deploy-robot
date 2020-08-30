@@ -13,7 +13,7 @@ export default {
     ts: `eslint --ext .js,.ts,.tsx ${tsFiles}`,
     export: `no-unused-export ${tsFiles}`,
     markdown: `markdownlint README.md`,
-    typeCoverage: 'type-coverage -p src --ignore-catch'
+    typeCoverage: 'type-coverage -p src'
   },
   test: [
     new Program('clean-release --config clean-run.config.ts', 30000)

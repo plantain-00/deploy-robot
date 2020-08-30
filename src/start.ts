@@ -22,7 +22,7 @@ if (!handler) {
 
 let isExecuting = false // commands are designed be excuted one by one in a process globally.
 const commands: Command[] = []
-const failedCommands: { command: Command, error: Error }[] = []
+const failedCommands: { command: Command, error: unknown }[] = []
 async function runCommands() {
   if (!isExecuting) {
     isExecuting = true
@@ -31,10 +31,10 @@ async function runCommands() {
       try {
         await libs.exec(firstCommand.command)
         await handler.createComment(firstCommand.context.doneText!, firstCommand.context)
-      } catch (error) {
+      } catch (error: unknown) {
         console.log(error)
         failedCommands.push({ command: firstCommand, error })
-        await handler.createComment(error, firstCommand.context)
+        await handler.createComment(String(error), firstCommand.context)
       }
     }
     isExecuting = false
@@ -46,7 +46,7 @@ let ports: Ports
 try {
   const data = libs.fs.readFileSync(dataFilePath, 'utf8')
   ports = JSON.parse(data)
-} catch (error) {
+} catch (error: unknown) {
   console.log(error)
   ports = {}
 }
@@ -145,9 +145,9 @@ app.post('/', async(request, response) => {
     } else {
       response.end(`can not handle event: ${eventName}.`)
     }
-  } catch (error) {
+  } catch (error: unknown) {
     console.log(error)
-    response.end(error.toString())
+    response.end(String(error))
   }
 })
 
