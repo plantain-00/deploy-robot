@@ -62,7 +62,7 @@ app.get('/', (request, response) => {
 app.post('/', async(request, response) => {
   try {
     const repositoryName = handler.getRepositoryName(request)
-    const application = config.applications.find((value, index, obj) => value.repositoryName === repositoryName)
+    const application = config.applications.find((value) => value.repositoryName === repositoryName)
     if (!application) {
       response.end('name of repository is not found')
       return

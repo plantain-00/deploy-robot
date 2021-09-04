@@ -17,7 +17,7 @@ export const githubHander: libs.Handler<Context> = {
           'Authorization': `token ${accessToken}`,
           'User-Agent': 'SubsNoti-robot'
         }
-      }, (error, incomingMessage, body) => {
+      }, (error: unknown, incomingMessage, body) => {
         if (error) {
           console.log(error)
         } else if (incomingMessage.statusCode !== 201) {
